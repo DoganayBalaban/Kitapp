@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { generateToken } from "../lib/utils.js";
+import cloudinary from "../lib/cloudinary.js";
 
 export const signupRoute = async (req, res) => {
   const { name, email, password } = req.body;
@@ -86,9 +87,31 @@ export const logoutRoute = async (req, res) => {
   }
 };
 export const updateProfileRoute = async (req, res) => {
-  res.send("Login route");
+  const { avatar } = req.body;
+  const userId = req.user._id;
+  try {
+    if (!avatar) {
+      return res.status(400).json({ message: "Lütfen avatar seçiniz." });
+    }
+    const uploadAvatar = await cloudinary.uploader.upload(avatar);
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        avatar: uploadAvatar.secure_url,
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Sunucu hatası." });
+  }
 };
-
 export const meAuthRoute = async (req, res) => {
-  res.send("Login route");
+  try {
+    res.status(200).json(req.user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Sunucu hatası." });
+  }
 };
