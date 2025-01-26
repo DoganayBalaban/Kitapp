@@ -4,28 +4,28 @@ import User from "../models/user.model.js";
 export const sendConnectionRequest = async (req, res) => {
   try {
     const { userId } = req.params;
-    const sender = req.user._id;
-    if (sender.toString() === userId.toString()) {
+    const from = req.user._id;
+    if (from.toString() === userId.toString()) {
       return res
         .status(400)
         .json({ message: "You cannot send request to yourself" });
     }
-    if (req.user.connections.includes(userId)) {
+    if (req.user.friends.includes(userId)) {
       return res
         .status(400)
         .json({ message: "You are already connected with this user" });
     }
     const existingRequest = await FriendRequest.findOne({
-      sender,
-      recipient: userId,
+      from,
+      to: userId,
       status: "pending",
     });
     if (existingRequest) {
       return res.status(400).json({ message: "Request already sent" });
     }
     const newRequest = new FriendRequest({
-      sender,
-      recipient: userId,
+      from,
+      to: userId,
     });
     await newRequest.save();
     res.status(201).json({ message: "Request sent successfully" });
@@ -40,15 +40,15 @@ export const acceptConnectionRequest = async (req, res) => {
     const userId = req.user._id;
 
     const request = await FriendRequest.findById(requestId)
-      .populate("sender", "name email username")
-      .populate("recipient", "name username");
+      .populate("from", "name email")
+      .populate("to", "name");
 
     if (!request) {
       return res.status(404).json({ message: "Connection request not found" });
     }
 
     // check if the req is for the current user
-    if (request.recipient._id.toString() !== userId.toString()) {
+    if (request.to._id.toString() !== userId.toString()) {
       return res
         .status(403)
         .json({ message: "Not authorized to accept this request" });
@@ -64,11 +64,11 @@ export const acceptConnectionRequest = async (req, res) => {
     await request.save();
 
     // if im your friend then ur also my friend ;)
-    await User.findByIdAndUpdate(request.sender._id, {
-      $addToSet: { connections: userId },
+    await User.findByIdAndUpdate(request.from._id, {
+      $addToSet: { friends: userId },
     });
     await User.findByIdAndUpdate(userId, {
-      $addToSet: { connections: request.sender._id },
+      $addToSet: { friends: request.sender._id },
     });
 
     res.json({ message: "Connection accepted successfully" });
@@ -83,7 +83,7 @@ export const rejectConnectionRequest = async (req, res) => {
   const userId = req.user._id;
   try {
     const request = await FriendRequest.findById(requestId);
-    if (request.recipient.toString() !== userId.toString()) {
+    if (request.to.toString() !== userId.toString()) {
       return res
         .status(403)
         .json({ message: "You are not authorized to reject this request" });
@@ -105,9 +105,9 @@ export const getConnectionRequests = async (req, res) => {
   const userId = req.user._id;
   try {
     const requests = await FriendRequest.find({
-      recipient: userId,
+      to: userId,
       status: "pending",
-    }).populate("sender", "name username profilePicture headline connections");
+    }).populate("from", "name avatar friends");
     res.status(200).json(requests);
   } catch (error) {
     console.error("Error in getConnectionRequests controller:", error);
@@ -118,8 +118,8 @@ export const getUserConnections = async (req, res) => {
   const userId = req.user._id;
   try {
     const user = await User.findById(userId).populate(
-      "connections",
-      "name username profilePicture headline connections"
+      "friends",
+      "name avatar friends"
     );
     res.status(200).json(user.connections);
   } catch (error) {
@@ -131,8 +131,8 @@ export const removeConnection = async (req, res) => {
   const myId = req.user._id;
   const { userId } = req.params;
   try {
-    await User.findByIdAndUpdate(myId, { $pull: { connections: userId } });
-    await User.findByIdAndUpdate(userId, { $pull: { connections: myId } });
+    await User.findByIdAndUpdate(myId, { $pull: { friends: userId } });
+    await User.findByIdAndUpdate(userId, { $pull: { friends: myId } });
     res.status(200).json({ message: "Connection removed successfully" });
   } catch (error) {
     console.error("Error in removeConnection controller:", error);
@@ -145,18 +145,18 @@ export const getConnectionStatus = async (req, res) => {
 
   try {
     const currentUser = req.user;
-    if (currentUser.connections.includes(targetUserId)) {
+    if (currentUser.friends.includes(targetUserId)) {
       return res.status(200).json({ status: "connected" });
     }
     const pendingRequest = await FriendRequest.findOne({
       $or: [
-        { sender: currentUserId, recipient: targetUserId },
-        { sender: targetUserId, recipient: currentUserId },
+        { from: currentUserId, to: targetUserId },
+        { from: targetUserId, to: currentUserId },
       ],
       status: "pending",
     });
     if (pendingRequest) {
-      if (pendingRequest.sender.toString() === currentUserId.toString()) {
+      if (pendingRequest.from.toString() === currentUserId.toString()) {
         return res.status(200).json({ status: "pending" });
       } else {
         return res
