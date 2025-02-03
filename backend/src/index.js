@@ -20,7 +20,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/book", bookRoutes);
-app.use("/api/book", connectionRoutes);
+app.use("/api/friends", connectionRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
