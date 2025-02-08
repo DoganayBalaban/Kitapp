@@ -1,27 +1,44 @@
+import { BookOpen, Eye, EyeOff } from "lucide-react";
 import React, { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
-import { BookOpen, Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const Login = () => {
+const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [data, setData] = useState({
+    name: "",
     email: "",
     password: "",
   });
-  const { login, isLoggingIn } = useAuthStore();
+  const { register, isRegister } = useAuthStore();
   const handleSubmit = (e) => {
     e.preventDefault();
-    login(data);
+    register(data);
   };
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
         <BookOpen className="w-12 h-12 mx-auto" />
-        <h2 className="text-2xl font-bold text-center">Giriş Yap</h2>
+        <h2 className="text-2xl font-bold text-center">Kayıt Ol</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
+              İsim
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              required
+              value={data.name}
+              onChange={(e) => setData({ ...data, name: e.target.value })}
+              className="mt-1 p-2 w-full border rounded-md"
+            />
+          </div>
           <div>
             <label
               htmlFor="email"
@@ -72,15 +89,13 @@ const Login = () => {
             type="submit"
             className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700"
           >
-            Giriş Yap
+            Kayıt Ol
           </button>
         </form>
         <div className="flex justify-between text-sm mt-4">
-          <Link to="/forgot-password" className="text-blue-600 hover:underline">
-            Şifremi Unuttum
-          </Link>
-          <Link to="/register" className="text-blue-600 hover:underline">
-            Hesap Oluştur
+          Bir hesabınız var mı?{" "}
+          <Link to="/login" className="text-blue-600 hover:underline">
+            Giriş Yap
           </Link>
         </div>
       </div>
@@ -88,4 +103,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

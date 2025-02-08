@@ -13,6 +13,6 @@ router.post("/signup", signupRoute);
 router.post("/login", loginRoute);
 router.post("/logout", logoutRoute);
 router.put("/update-profile", protectRoute, updateProfileRoute);
-router.get("/me", meAuthRoute);
+router.get("/me", protectRoute, meAuthRoute);
 
 export default router;
