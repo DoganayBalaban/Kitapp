@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
-import { BookOpen, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Login = () => {
@@ -27,13 +27,14 @@ const Login = () => {
           <form onSubmit={handleSubmit} className="space-y-6 ">
             <div className="flex flex-col space-y-6">
               <div className="flex flex-col space-y-2">
-                <label>Kullanıcı adı</label>
+                <label>Email</label>
                 <input
-                  type="text"
+                  type="email"
                   name="name"
                   id="name"
                   className="p-4 border rounded-md w-auto focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder="Adınızı giriniz"
+                  placeholder="E-mail'inizi giriniz"
+                  onChange={(e) => setData({ ...data, email: e.target.value })}
                 />
               </div>
               <div className="flex flex-col space-y-2">
@@ -45,6 +46,9 @@ const Login = () => {
                     id="name"
                     className="p-4 border rounded-md w-96 focus:outline-none focus:ring-2 focus:ring-primary "
                     placeholder="Şifrenizi giriniz"
+                    onChange={(e) =>
+                      setData({ ...data, password: e.target.value })
+                    }
                   />
                   <button
                     type="button"
@@ -79,8 +83,15 @@ const Login = () => {
                 </div>
               </div>
               <div>
-                <button className="bg-black text-white p-4 rounded-md w-full">
-                  Sign in
+                <button
+                  className="bg-black text-white p-4 rounded-md w-full justify-center items-center flex"
+                  disabled={isLoggingIn}
+                >
+                  {isLoggingIn ? (
+                    <Loader className="animate-spin" />
+                  ) : (
+                    "Sign in"
+                  )}
                 </button>
               </div>
               <div className="flex justify-center items-center">

@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "İsim alanı boş bırakılamaz."],
       trim: true,
-      minLength: [5, "İsim alanı en az 5 karakter olmalıdır."],
+      minLength: [3, "İsim alanı en az 3 karakter olmalıdır."],
     },
     email: {
       type: String,
