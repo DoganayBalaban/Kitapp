@@ -51,14 +51,14 @@ const Landing = () => {
           keşfet.
         </p>
         <div className="p-3 mt-4 flex items-center justify-center">
-          <Link to="/register">
+          <Link to="/login">
             <button className="text-2xl border rounded-2xl m-3 p-3 group hover:bg-black transition duration-500">
               <p className="group-hover:text-white transition duration-500">
                 Giriş yap
               </p>
             </button>
           </Link>
-          <Link to="/login">
+          <Link to="/register">
             {" "}
             <button className="items-center justify-center text-2xl flex border rounded-2xl m-3 p-3 group hover:bg-black transition duration-500">
               <p className="group-hover:text-white transition duration-500">

@@ -16,73 +16,87 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
-        <BookOpen className="w-12 h-12 mx-auto" />
-        <h2 className="text-2xl font-bold text-center">Giriş Yap</h2>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              E-posta
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              value={data.email}
-              onChange={(e) => setData({ ...data, email: e.target.value })}
-              className="mt-1 p-2 w-full border rounded-md"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Şifre
-            </label>
-            <div className="flex items-center gap-3 ">
-              <input
-                id="password"
-                name="password"
-                {...(showPassword ? { type: "text" } : { type: "password" })}
-                required
-                value={data.password}
-                onChange={(e) => setData({ ...data, password: e.target.value })}
-                className="mt-1 p-2 w-full border rounded-md"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <EyeOff className="h-5 w-5 text-base-content/40" />
-                ) : (
-                  <Eye className="h-5 w-5 text-base-content/40" />
-                )}
-              </button>
+    <div className="h-screen pt-19 grid lg:grid-cols-2 p-6 bg-[#FCFCFF]">
+      {/* Left side form */}
+      <div className="flex justify-center items-center">
+        <div className="flex flex-col space-y-5 p-6 sm:p-12 border rounded shadow-2xl">
+          <span className="text-4xl font-extralight ">Merhaba !</span>
+          <h1 className="text-5xl font-bold">Sign in to</h1>
+          <span className="text-2xl font-extralight">Kitapp for free!</span>
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-6 ">
+            <div className="flex flex-col space-y-6">
+              <div className="flex flex-col space-y-2">
+                <label>Kullanıcı adı</label>
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  className="p-4 border rounded-md w-auto focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="Adınızı giriniz"
+                />
+              </div>
+              <div className="flex flex-col space-y-2">
+                <label>Şifre</label>
+                <div className="flex justify-center items-center relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="name"
+                    id="name"
+                    className="p-4 border rounded-md w-96 focus:outline-none focus:ring-2 focus:ring-primary "
+                    placeholder="Şifrenizi giriniz"
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5 text-base-content/40" />
+                    ) : (
+                      <Eye className="h-5 w-5 text-base-content/40" />
+                    )}
+                  </button>
+                </div>
+              </div>
+              <div className="flex justify-between items-center space-x-10">
+                <div className="space-x-2 flex">
+                  <input
+                    type="checkbox"
+                    name=""
+                    id=""
+                    className="border outline-black rounded"
+                  />
+                  <label className="font-light text-sm">Remember Me</label>
+                </div>
+                <div>
+                  <Link
+                    to="/forgotpassword"
+                    className="font-light text-sm text-gray-600"
+                  >
+                    Forgot Password?
+                  </Link>
+                </div>
+              </div>
+              <div>
+                <button className="bg-black text-white p-4 rounded-md w-full">
+                  Sign in
+                </button>
+              </div>
+              <div className="flex justify-center items-center">
+                <span className="font-light">
+                  Don't have an account?{" "}
+                  <Link to="/register" className="text-primary font-bold">
+                    Sign up
+                  </Link>
+                </span>
+              </div>
             </div>
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700"
-          >
-            Giriş Yap
-          </button>
-        </form>
-        <div className="flex justify-between text-sm mt-4">
-          <Link to="/forgot-password" className="text-blue-600 hover:underline">
-            Şifremi Unuttum
-          </Link>
-          <Link to="/register" className="text-blue-600 hover:underline">
-            Hesap Oluştur
-          </Link>
+          </form>
         </div>
+      </div>
+      <div className="flex items-center justify-center w-184">
+        <img src="/Communication.gif" alt="loginicon" />
       </div>
     </div>
   );
