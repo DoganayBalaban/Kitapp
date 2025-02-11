@@ -6,7 +6,7 @@ import BookLogo from "../assets/images/logo1nonbg.svg";
 
 const Landing = () => {
   const [titleNumber, setTitleNumber] = useState(0);
-  const titles = useMemo(() => ["Takip et", "Keşfet", "Arşivle", "Paylaş"], []);
+  const titles = useMemo(() => ["Düzenle", "Keşfet", "Arşivle", "Paylaş"], []);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -20,49 +20,47 @@ const Landing = () => {
   }, [titleNumber, titles]);
 
   return (
-    <div className="container">
-      <div className="flex flex-col items-center justify-center h-screen">
-        <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
-          <Book size={48} />
-        </div>
-        <h1 className="text-6xl font-bold relative">
-          Okuduğun Kitapları{"  "}
-          <span className="space-x-2">
-            {titles.map((title, index) => (
-              <motion.span
-                key={index}
-                className="absolute font-bold text-primary ml-2"
-                initial={{ opacity: 0, y: "-100" }}
-                transition={{ type: "spring", stiffness: 50 }}
-                animate={
-                  titleNumber === index
-                    ? { y: 0, opacity: 1 }
-                    : { y: titleNumber > index ? -150 : 150, opacity: 0 }
-                }
-              >
-                {title}
-              </motion.span>
-            ))}
-          </span>
-          <p>Yeni Keşifler Yap!</p>
-        </h1>
-        <p className="text-2xl m-10">
-          Okuma alışkanlığını düzenle, kitaplarını arşivle ve yeni öneriler
-          keşfet.
-        </p>
-        <div className="p-3 mt-4 flex items-center justify-center">
-          <Link to="/login">
-            <button className="text-2xl border rounded-2xl m-3 p-3 group hover:bg-black transition duration-500">
-              <p className="group-hover:text-white transition duration-500">
-                Giriş yap
-              </p>
-            </button>
-          </Link>
-          <Link to="/register">
+    <div className="grid grid-cols-2 min-h-screen place-items-center bg-[#FCFCFF]">
+      {/* Left side */}
+      <div className="flex flex-col items-center justify-center h-screen ">
+        <div className="p-3 justify-center items-center ">
+          <div className="">
+            <h1 className="text-6xl font-medium relative ">
+              Okuduğun Kitapları{"  "}
+              <span className="space-x-2">
+                {titles.map((title, index) => (
+                  <motion.span
+                    key={index}
+                    className="absolute font-bold text-primary ml-2"
+                    initial={{ opacity: 0, y: "-100" }}
+                    transition={{ type: "spring", stiffness: 50 }}
+                    animate={
+                      titleNumber === index
+                        ? { y: 0, opacity: 1 }
+                        : { y: titleNumber > index ? -150 : 150, opacity: 0 }
+                    }
+                  >
+                    {title}
+                  </motion.span>
+                ))}
+              </span>
+              <p>Yeni Keşifler Yap!</p>
+            </h1>{" "}
+          </div>
+          <div>
             {" "}
+            <p className="text-2xl m-10">
+              Okuma alışkanlığını düzenle, kitaplarını arşivle ve yeni öneriler
+              keşfet.
+            </p>
+          </div>
+        </div>
+
+        <div className="p-3 mt-4 flex items-center justify-center">
+          <Link to="/register">
             <button className="items-center justify-center text-2xl flex border rounded-2xl m-3 p-3 group hover:bg-black transition duration-500">
-              <p className="group-hover:text-white transition duration-500">
-                Kayıt ol
+              <p className="group-hover:text-white text-2xl transition duration-500">
+                Hadi Başlayalım!
               </p>
               <MoveRight
                 className="group-hover:text-white transition duration-500 ml-2"
@@ -71,6 +69,10 @@ const Landing = () => {
             </button>
           </Link>
         </div>
+      </div>
+      {/* right side */}
+      <div className="flex justify-center items-center h-screen">
+        <img src="landing.svg" className="" alt="" />
       </div>
     </div>
   );
