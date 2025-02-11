@@ -7,11 +7,11 @@ const Navbar = () => {
   const { user, logout } = useAuthStore();
   return (
     <header
-      className="bg-base-100 border-b border-base-300 fixed w-full top-0 z-40 
+      className="bg-base-100  border-base-300 fixed w-full top-0 z-40 
     backdrop-blur-lg bg-base-100/80"
     >
       <div className="container mx-auto px-4 h-16">
-        <div className="flex items-center justify-between h-full">
+        <div className="flex items-center justify-between h-full mt-3">
           <div className="flex items-center gap-8">
             <Link
               to="/"
@@ -28,21 +28,21 @@ const Navbar = () => {
             <Link
               to={"/kitaplar"}
               className={`
-              btn btn-sm gap-2 transition-colors flex items-center hover:bg-gray-200 rounded-md p-2
+              btn btn-sm gap-2 transition-colors flex flex-col items-center hover:bg-gray-200 rounded-md p-4
               
               `}
             >
-              <BookA className="w-4 h-4" />
+              <BookA className="w-6 h-6" />
               <span className="hidden sm:inline">Kitaplar</span>
             </Link>
             <Link
               to={"/ara"}
               className={`
-              btn btn-sm gap-2 transition-colors flex items-center hover:bg-gray-200 rounded-md p-2
+              btn btn-sm gap-2 transition-colors flex flex-col items-center hover:bg-gray-200 rounded-md p-4
               
               `}
             >
-              <Search className="w-4 h-4" />
+              <Search className="w-6 h-6" />
               <span className="hidden sm:inline">Kitap Ara</span>
             </Link>
 
@@ -51,26 +51,38 @@ const Navbar = () => {
                 <Link
                   to={"/kütüphane"}
                   className={`
-              btn btn-sm gap-2 transition-colors flex items-center hover:bg-gray-200 rounded-md p-2
+              btn btn-sm gap-2  transition-colors flex flex-col items-center hover:bg-gray-200 rounded-md p-4
             
               `}
                 >
-                  <Library className="w-4 h-4" />
+                  <Library className="w-6 h-6" />
                   <span className="hidden sm:inline">Kütüphanem</span>
                 </Link>
                 <Link
                   to={"/profile"}
-                  className={`btn btn-sm gap-2 flex items-center hover:bg-gray-200 rounded-md p-2`}
+                  className={`btn btn-sm gap-2 flex flex-col items-center hover:bg-gray-200 rounded-md p-4`}
                 >
-                  <User className="size-5" />
+                  {user.avatar ? (
+                    <img
+                      src={user.avatar}
+                      alt="avatar"
+                      className="w-6 h-6 rounded-full"
+                    />
+                  ) : (
+                    <img
+                      src="https://media.istockphoto.com/id/1495088043/tr/vekt%C3%B6r/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=1024x1024&w=is&k=20&c=gKLAWzRAE77Y213dcbWWxa_l3I4FqKoUNTX1gPk363E="
+                      alt="avatar"
+                      className="w-6 h-6 rounded-full"
+                    />
+                  )}
                   <span className="hidden sm:inline">Profil</span>
                 </Link>
 
                 <button
                   onClick={logout}
-                  className="gap-2 flex items-center hover:bg-gray-200 rounded-md p-2 cursor-pointer"
+                  className="gap-2 flex flex-col items-center hover:bg-gray-200 rounded-md p-4 cursor-pointer"
                 >
-                  <LogOut className="size-5" />
+                  <LogOut className="w-6 h-6" />
                   <span className="hidden sm:inline">Çıkış yap</span>
                 </button>
               </>

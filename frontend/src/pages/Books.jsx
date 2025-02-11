@@ -25,7 +25,7 @@ const Books = () => {
     return <div>{error}</div>;
   }
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mt-19 p-4">
       <h1 className="text-2xl font-bold mb-4">Kitaplar</h1>
 
       {/* Arama Kutusu */}
@@ -51,18 +51,23 @@ const Books = () => {
       {books.length > 0 ? (
         <div>
           <h2 className="text-xl font-semibold mb-2">Arama Sonuçları</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {books.map((book) => (
-              <div key={book.id} className="border p-2 rounded-md">
-                <img
-                  src={book.thumbnail}
-                  alt={book.title}
-                  className="w-full h-40 object-cover rounded"
-                />
-                <h3 className="font-semibold mt-2">{book.title}</h3>
-                <p className="text-sm">{book.authors.join(", ")}</p>
-              </div>
-            ))}
+          <div className="">
+            <Swiper spaceBetween={50} slidesPerView={3}>
+              {books.map((book) => (
+                <div key={book.id} className="border p-2 rounded-md">
+                  <SwiperSlide>
+                    {" "}
+                    <img
+                      src={book.thumbnail}
+                      alt={book.title}
+                      className="w-full h-auto object-cover rounded"
+                    />
+                    <h3 className="font-semibold mt-2">{book.title}</h3>
+                    <p className="text-sm">{book.authors.join(", ")}</p>
+                  </SwiperSlide>
+                </div>
+              ))}
+            </Swiper>
           </div>
         </div>
       ) : (

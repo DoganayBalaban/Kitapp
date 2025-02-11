@@ -9,6 +9,7 @@ import { Toaster } from "react-hot-toast";
 import Landing from "./pages/Landing";
 import Register from "./pages/Register";
 import Books from "./pages/Books";
+import NotFound from "./pages/NotFound";
 
 const App = () => {
   const { user, checkAuth, isCheckingAuth } = useAuthStore();
@@ -30,22 +31,18 @@ const App = () => {
       <Routes>
         <Route
           path="/"
-          element={!user ? <Landing /> : <Navigate to="/home" />}
+          element={!user ? <Landing /> : <Navigate to="/kitaplar" />}
         />
-
         <Route
           path="/login"
-          element={!user ? <Login /> : <Navigate to="/home" />}
+          element={!user ? <Login /> : <Navigate to="/kitaplar" />}
         />
         <Route
           path="/register"
-          element={!user ? <Register /> : <Navigate to="/home" />}
-        />
-        <Route
-          path="/home"
-          element={user ? <Home /> : <Navigate to="/login" />}
+          element={!user ? <Register /> : <Navigate to="/kitaplar" />}
         />
         <Route path="/kitaplar" element={<Books />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

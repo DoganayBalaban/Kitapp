@@ -22,7 +22,7 @@ const Landing = () => {
   return (
     <div className="grid grid-cols-2 min-h-screen place-items-center bg-[#FCFCFF]">
       {/* Left side */}
-      <div className="flex flex-col items-center justify-center h-screen ">
+      <div className="flex flex-col items-center justify-center h-screen mt-12">
         <div className="p-3 justify-center items-center ">
           <div className="">
             <h1 className="text-6xl font-medium relative ">

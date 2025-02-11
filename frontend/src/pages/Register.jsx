@@ -132,7 +132,7 @@ const Register = () => {
           </form>
         </div>
       </div>
-      <div className="items-center justify-center w-184 hidden sm:block">
+      <div className=" items-center justify-center w-184 hidden sm:block">
         <img src="/Communication.gif" alt="loginicon" />
       </div>
     </div>

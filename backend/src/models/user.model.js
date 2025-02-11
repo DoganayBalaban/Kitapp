@@ -25,7 +25,8 @@ const userSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      default: "",
+      default:
+        "https://res.cloudinary.com/df1ocaort/image/upload/v1733401822/uh9rnt7dcyeatnvwrlal.png",
     },
     readingList: [
       {
