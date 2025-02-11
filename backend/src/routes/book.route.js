@@ -1,11 +1,15 @@
 import express from "express";
-import { searchBooks, getBookDetails } from "../controllers/book.controller.js";
+import {
+  searchBooks,
+  getBookDetails,
+  getFeaturedBooks,
+} from "../controllers/book.controller.js";
 
 const router = express.Router();
 
 // Kitapları aramak için
-router.get("/search", searchBooks);
-
+router.post("/search", searchBooks);
+router.get("/featured", getFeaturedBooks);
 // Tek bir kitabın detayını almak için
 router.get("/:id", getBookDetails);
 

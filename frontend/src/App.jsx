@@ -8,6 +8,7 @@ import { Loader } from "lucide-react";
 import { Toaster } from "react-hot-toast";
 import Landing from "./pages/Landing";
 import Register from "./pages/Register";
+import Books from "./pages/Books";
 
 const App = () => {
   const { user, checkAuth, isCheckingAuth } = useAuthStore();
@@ -31,10 +32,7 @@ const App = () => {
           path="/"
           element={!user ? <Landing /> : <Navigate to="/home" />}
         />
-        <Route
-          path="/home"
-          element={user ? <Home /> : <Navigate to="/login" />}
-        />
+
         <Route
           path="/login"
           element={!user ? <Login /> : <Navigate to="/home" />}
@@ -43,6 +41,11 @@ const App = () => {
           path="/register"
           element={!user ? <Register /> : <Navigate to="/home" />}
         />
+        <Route
+          path="/home"
+          element={user ? <Home /> : <Navigate to="/login" />}
+        />
+        <Route path="/kitaplar" element={<Books />} />
       </Routes>
     </>
   );

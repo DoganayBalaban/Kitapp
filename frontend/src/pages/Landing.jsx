@@ -71,7 +71,7 @@ const Landing = () => {
         </div>
       </div>
       {/* right side */}
-      <div className="flex justify-center items-center h-screen">
+      <div className="hidden lg:flex justify-center items-center h-screen ">
         <img src="landing.svg" className="" alt="" />
       </div>
     </div>
