@@ -35,6 +35,8 @@ export const searchBooks = async (req, res) => {
       pageCount: book.volumeInfo.pageCount || "Bilinmiyor",
       categories: book.volumeInfo.categories || [],
       thumbnail: book.volumeInfo.imageLinks?.thumbnail || "",
+      rating: book.volumeInfo.averageRating || 0,
+      ratingsCount: book.volumeInfo.ratingsCount || 0,
     }));
 
     res.status(200).json({ books, totalItems: response.data.totalItems });

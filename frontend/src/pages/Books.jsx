@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { useBookStore } from "../store/useBookStore";
+import { Loader } from "lucide-react";
 const Books = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const searchQuery = queryParams.get("search") || "";
   const {
     books,
     booksBySearch,
@@ -12,58 +17,61 @@ const Books = () => {
     featuredBooks,
     getFeaturedBooks,
   } = useBookStore();
-  const [query, setQuery] = useState("");
-  const handleSearch = (e) => {
-    e.preventDefault();
+  const [query, setQuery] = useState(searchQuery || "");
 
-    booksBySearch(query);
-  };
   useEffect(() => {
-    getFeaturedBooks();
-  }, []);
-  if (error) {
-    return <div>{error}</div>;
+    if (searchQuery) {
+      booksBySearch(searchQuery);
+    } else {
+      getFeaturedBooks();
+    }
+  }, [searchQuery]);
+  if (isGettingBooks) {
+    return <Loader size={10} className="animate-spin"></Loader>;
   }
   return (
     <div className="container mt-19 p-4">
-      <h1 className="text-2xl font-bold mb-4">Kitaplar</h1>
-
-      {/* Arama Kutusu */}
-      <form onSubmit={handleSearch} className="mb-6">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Kitap ara..."
-          className="p-2 border border-gray-300 rounded-md w-full"
-        />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded mt-2 w-full"
-        >
-          Ara
-        </button>
-      </form>
-
-      {isGettingBooks && <p>Yükleniyor...</p>}
+      <div className="p-4 space-y-2 justify-center items-center flex-col mt-19">
+        <div className="text-center">
+          <h1 className="text-5xl font-light">Kitapp'a Hoşgeldin</h1>
+        </div>
+        <div className="text-center">
+          <p>
+            Meet your favorite book, find your reading community and manage your
+            reading life.
+          </p>
+        </div>
+      </div>
 
       {/* Arama Sonuçları */}
       {books.length > 0 ? (
         <div>
           <h2 className="text-xl font-semibold mb-2">Arama Sonuçları</h2>
           <div className="">
-            <Swiper spaceBetween={50} slidesPerView={3}>
+            <Swiper spaceBetween={40} slidesPerView={5}>
               {books.map((book) => (
-                <div key={book.id} className="border p-2 rounded-md">
+                <div key={book.id} className="border p-4  rounded-md">
                   <SwiperSlide>
-                    {" "}
-                    <img
-                      src={book.thumbnail}
-                      alt={book.title}
-                      className="w-full h-auto object-cover rounded"
-                    />
-                    <h3 className="font-semibold mt-2">{book.title}</h3>
-                    <p className="text-sm">{book.authors.join(", ")}</p>
+                    <div className="flex-col items-center justify-center p-4 space-y-2">
+                      <div className="">
+                        <img
+                          src={book.thumbnail}
+                          alt={book.title}
+                          className="w-full h-auto object-cover rounded shadow-2xl"
+                        />
+                      </div>
+                      <div className="text-center p-2 space-y-4 ">
+                        {" "}
+                        <h3 className="font-semibold mt-2">{book.title}</h3>
+                        <p className="text-sm font-light">
+                          {book.authors.join(", ")}
+                        </p>
+                        <p className="text-sm">
+                          Puan: {book.rating || "N/A"} ⭐ (
+                          {book.ratingsCount || 0} oy)
+                        </p>
+                      </div>
+                    </div>
                   </SwiperSlide>
                 </div>
               ))}
@@ -71,21 +79,33 @@ const Books = () => {
           </div>
         </div>
       ) : (
-        <div>
-          <h2 className="text-xl font-semibold mb-2">Öne Çıkan Kitaplar</h2>
+        <div className="mx-15">
+          <h2 className="text-3xl font-light mb-2">Şu anda Popüler</h2>
           <div className="">
-            <Swiper spaceBetween={50} slidesPerView={3}>
+            <Swiper spaceBetween={40} slidesPerView={5}>
               {featuredBooks.map((book) => (
-                <div key={book.id} className="border p-2 rounded-md">
+                <div key={book.id} className="border p-4  rounded-md">
                   <SwiperSlide>
-                    {" "}
-                    <img
-                      src={book.thumbnail}
-                      alt={book.title}
-                      className="w-full h-auto object-cover rounded"
-                    />
-                    <h3 className="font-semibold mt-2">{book.title}</h3>
-                    <p className="text-sm">{book.authors.join(", ")}</p>
+                    <div className="flex-col items-center justify-center p-4 space-y-2">
+                      <div className="">
+                        <img
+                          src={book.thumbnail}
+                          alt={book.title}
+                          className="w-full h-auto object-cover rounded shadow-2xl"
+                        />
+                      </div>
+                      <div className="text-center p-2 space-y-4 ">
+                        {" "}
+                        <h3 className="font-semibold mt-2">{book.title}</h3>
+                        <p className="text-sm font-light">
+                          {book.authors.join(", ")}
+                        </p>
+                        <p className="text-sm">
+                          Puan: {book.rating || "N/A"} ⭐ (
+                          {book.ratingsCount || 0} oy)
+                        </p>
+                      </div>
+                    </div>
                   </SwiperSlide>
                 </div>
               ))}

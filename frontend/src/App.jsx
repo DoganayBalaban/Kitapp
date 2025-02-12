@@ -10,6 +10,7 @@ import Landing from "./pages/Landing";
 import Register from "./pages/Register";
 import Books from "./pages/Books";
 import NotFound from "./pages/NotFound";
+import Footer from "./components/Footer";
 
 const App = () => {
   const { user, checkAuth, isCheckingAuth } = useAuthStore();
@@ -44,6 +45,7 @@ const App = () => {
         <Route path="/kitaplar" element={<Books />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Footer />
     </>
   );
 };

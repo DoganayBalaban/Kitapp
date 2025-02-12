@@ -1,10 +1,25 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { User, LogOut, Book, BookA, Search, Library } from "lucide-react";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  User,
+  LogOut,
+  Book,
+  BookA,
+  Search,
+  Library,
+  SearchSlashIcon,
+  SearchIcon,
+} from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 
 const Navbar = () => {
   const { user, logout } = useAuthStore();
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
+  const handleSearch = (e) => {
+    e.preventDefault();
+    navigate(`/kitaplar?search=${search}`);
+  };
   return (
     <header
       className="bg-base-100  border-base-300 fixed w-full top-0 z-40 
@@ -24,6 +39,22 @@ const Navbar = () => {
             </Link>
           </div>
 
+          <form
+            onSubmit={handleSearch}
+            className="flex justify-center items-center"
+          >
+            <div className="relative">
+              <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-500" />
+              <input
+                type="text"
+                className="p-2 pl-12 w-68 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="Search name, book, author..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+          </form>
+
           <div className="flex items-center gap-6">
             <Link
               to={"/kitaplar"}
@@ -34,16 +65,6 @@ const Navbar = () => {
             >
               <BookA className="w-6 h-6" />
               <span className="hidden sm:inline">Kitaplar</span>
-            </Link>
-            <Link
-              to={"/ara"}
-              className={`
-              btn btn-sm gap-2 transition-colors flex flex-col items-center hover:bg-gray-200 rounded-md p-4
-              
-              `}
-            >
-              <Search className="w-6 h-6" />
-              <span className="hidden sm:inline">Kitap Ara</span>
             </Link>
 
             {user && (
