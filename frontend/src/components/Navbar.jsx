@@ -9,6 +9,9 @@ import {
   Library,
   SearchSlashIcon,
   SearchIcon,
+  FileQuestion,
+  ShieldQuestionIcon,
+  CircleHelp,
 } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 
@@ -22,7 +25,7 @@ const Navbar = () => {
   };
   return (
     <header
-      className="bg-base-100  border-base-300 fixed w-full top-0 z-40 
+      className="bg-[#FCFCFF]  border-base-300 fixed w-full top-0 z-40 
     backdrop-blur-lg bg-base-100/80"
     >
       <div className="container mx-auto px-4 h-16">
@@ -48,7 +51,7 @@ const Navbar = () => {
               <input
                 type="text"
                 className="p-2 pl-12 w-68 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="Search name, book, author..."
+                placeholder="İsim, kitap, yazar ara..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -56,6 +59,16 @@ const Navbar = () => {
           </form>
 
           <div className="flex items-center gap-6">
+            <Link
+              to={"/neokusam"}
+              className={`
+              btn btn-sm gap-2 transition-colors flex flex-col items-center hover:bg-gray-200 rounded-md p-4
+              
+              `}
+            >
+              <CircleHelp className="w-6 h-6" />
+              <span className="hidden sm:inline">Ne Okusam</span>
+            </Link>
             <Link
               to={"/kitaplar"}
               className={`

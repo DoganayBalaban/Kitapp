@@ -11,6 +11,9 @@ import Register from "./pages/Register";
 import Books from "./pages/Books";
 import NotFound from "./pages/NotFound";
 import Footer from "./components/Footer";
+import BookDetails from "./pages/BookDetails";
+import Library from "./pages/Library";
+import Neokusam from "./pages/Neokusam";
 
 const App = () => {
   const { user, checkAuth, isCheckingAuth } = useAuthStore();
@@ -43,6 +46,9 @@ const App = () => {
           element={!user ? <Register /> : <Navigate to="/kitaplar" />}
         />
         <Route path="/kitaplar" element={<Books />} />
+        <Route path="/neokusam" element={<Neokusam />} />
+        <Route path="/kütüphane" element={<Library />} />
+        <Route path="/kitaplar/:id" element={<BookDetails />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

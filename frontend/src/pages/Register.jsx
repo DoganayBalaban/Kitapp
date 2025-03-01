@@ -29,8 +29,8 @@ const Register = () => {
       <div className="flex justify-center items-center">
         <div className="flex flex-col space-y-5 p-6 sm:p-12 border rounded shadow-2xl">
           <span className="text-4xl font-extralight ">Merhaba !</span>
-          <h1 className="text-5xl font-bold">Sign up to</h1>
-          <span className="text-2xl font-extralight">Kitapp for free!</span>
+          <h1 className="text-5xl font-bold">Kitapp'a Kaydol</h1>
+          <span className="text-2xl font-extralight">Tamamen ücretsiz!</span>
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6 ">
             <div className="flex flex-col space-y-6">
@@ -117,14 +117,14 @@ const Register = () => {
                   className="bg-black text-white p-4 rounded-md w-full justify-center items-center flex"
                   disabled={isRegister}
                 >
-                  {isRegister ? <Loader className="animate-spin" /> : "Sign up"}
+                  {isRegister ? <Loader className="animate-spin" /> : "Kaydol"}
                 </button>
               </div>
               <div className="flex justify-center items-center">
                 <span className="font-light">
-                  Already have an Account?{" "}
+                  Zaten hesabın var mı?{" "}
                   <Link to="/login" className="text-primary font-bold">
-                    Sign in
+                    Giriş yap
                   </Link>
                 </span>
               </div>

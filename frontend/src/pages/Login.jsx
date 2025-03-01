@@ -21,8 +21,8 @@ const Login = () => {
       <div className="flex justify-center items-center">
         <div className="flex flex-col space-y-5 p-6 sm:p-12 border rounded shadow-2xl">
           <span className="text-4xl font-extralight ">Merhaba !</span>
-          <h1 className="text-5xl font-bold">Sign in to</h1>
-          <span className="text-2xl font-extralight">Kitapp for free!</span>
+          <h1 className="text-5xl font-bold">Kitapp'a Giriş Yap</h1>
+          <span className="text-2xl font-extralight">Tamamen Ücretsiz!</span>
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6 ">
             <div className="flex flex-col space-y-6">
@@ -71,14 +71,14 @@ const Login = () => {
                     id=""
                     className="border outline-black rounded"
                   />
-                  <label className="font-light text-sm">Remember Me</label>
+                  <label className="font-light text-sm">Beni Hatırla</label>
                 </div>
                 <div>
                   <Link
                     to="/forgotpassword"
                     className="font-light text-sm text-gray-600"
                   >
-                    Forgot Password?
+                    Şifreni mi unuttun?
                   </Link>
                 </div>
               </div>
@@ -90,15 +90,15 @@ const Login = () => {
                   {isLoggingIn ? (
                     <Loader className="animate-spin" />
                   ) : (
-                    "Sign in"
+                    "Giriş yap"
                   )}
                 </button>
               </div>
               <div className="flex justify-center items-center">
                 <span className="font-light">
-                  Don't have an account?{" "}
+                  Hesabın yok mu?{" "}
                   <Link to="/register" className="text-primary font-bold">
-                    Sign up
+                    Kaydol
                   </Link>
                 </span>
               </div>

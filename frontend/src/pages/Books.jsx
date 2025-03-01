@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { useBookStore } from "../store/useBookStore";
-import { Loader } from "lucide-react";
+import { Loader, Star } from "lucide-react";
 const Books = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -37,8 +37,8 @@ const Books = () => {
         </div>
         <div className="text-center">
           <p>
-            Meet your favorite book, find your reading community and manage your
-            reading life.
+            En sevdiğin kitapla buluş, okuma topluluğunu bul ve okuma hayatını
+            yönet.
           </p>
         </div>
       </div>
@@ -50,28 +50,41 @@ const Books = () => {
           <div className="">
             <Swiper spaceBetween={40} slidesPerView={5}>
               {books.map((book) => (
-                <div key={book.id} className="border p-4  rounded-md">
+                <div
+                  key={book.id}
+                  className="border p-4 cursor-pointer  rounded-md "
+                >
                   <SwiperSlide>
-                    <div className="flex-col items-center justify-center p-4 space-y-2">
-                      <div className="">
-                        <img
-                          src={book.thumbnail}
-                          alt={book.title}
-                          className="w-full h-auto object-cover rounded shadow-2xl"
-                        />
+                    <Link to={`/kitaplar/${book.id}`}>
+                      <div className="flex-col items-center justify-center p-4 space-y-2 ">
+                        <div className="">
+                          <img
+                            src={book.thumbnail}
+                            alt={book.title}
+                            className="w-full h-auto object-cover rounded shadow-2xl"
+                          />
+                        </div>
+                        <div className="text-center p-2 space-y-4 ">
+                          {" "}
+                          <h3 className="font-semibold mt-2">{book.title}</h3>
+                          <p className="text-sm font-light">
+                            {book.authors.join(", ")}
+                          </p>
+                          <div className=" flex gap-2">
+                            {Array.from({ length: 5 }).map((_, index) => (
+                              <Star
+                                key={index}
+                                className={
+                                  index < book.rating
+                                    ? "text-yellow-500 fill-yellow-500"
+                                    : "text-gray-400"
+                                }
+                              />
+                            ))}
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-center p-2 space-y-4 ">
-                        {" "}
-                        <h3 className="font-semibold mt-2">{book.title}</h3>
-                        <p className="text-sm font-light">
-                          {book.authors.join(", ")}
-                        </p>
-                        <p className="text-sm">
-                          Puan: {book.rating || "N/A"} ⭐ (
-                          {book.ratingsCount || 0} oy)
-                        </p>
-                      </div>
-                    </div>
+                    </Link>
                   </SwiperSlide>
                 </div>
               ))}
@@ -86,26 +99,35 @@ const Books = () => {
               {featuredBooks.map((book) => (
                 <div key={book.id} className="border p-4  rounded-md">
                   <SwiperSlide>
-                    <div className="flex-col items-center justify-center p-4 space-y-2">
-                      <div className="">
-                        <img
-                          src={book.thumbnail}
-                          alt={book.title}
-                          className="w-full h-auto object-cover rounded shadow-2xl"
-                        />
+                    <Link to={`/kitaplar/${book.id}`}>
+                      <div className="flex-col items-center justify-center p-4 space-y-2">
+                        <div className="">
+                          <img
+                            src={book.thumbnail}
+                            alt={book.title}
+                            className="w-full h-auto object-cover rounded shadow-2xl"
+                          />
+                        </div>
+                        <div className="text-center p-2 space-y-4 flex flex-col justify-center items-center">
+                          <h3 className="font-semibold mt-2">{book.title}</h3>
+                          <p className="text-sm font-light">
+                            {book.authors.join(", ")}
+                          </p>
+                          <div className=" flex gap-2">
+                            {Array.from({ length: 5 }).map((_, index) => (
+                              <Star
+                                key={index}
+                                className={
+                                  index < book.rating
+                                    ? "text-yellow-500 fill-yellow-500"
+                                    : "text-gray-400"
+                                }
+                              />
+                            ))}
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-center p-2 space-y-4 ">
-                        {" "}
-                        <h3 className="font-semibold mt-2">{book.title}</h3>
-                        <p className="text-sm font-light">
-                          {book.authors.join(", ")}
-                        </p>
-                        <p className="text-sm">
-                          Puan: {book.rating || "N/A"} ⭐ (
-                          {book.ratingsCount || 0} oy)
-                        </p>
-                      </div>
-                    </div>
+                    </Link>
                   </SwiperSlide>
                 </div>
               ))}

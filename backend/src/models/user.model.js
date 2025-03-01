@@ -30,8 +30,15 @@ const userSchema = new mongoose.Schema(
     },
     readingList: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "UserBook",
+        bookId: String,
+        title: String,
+        authors: [String],
+        description: String,
+        publishedDate: String,
+        pageCount: Number,
+        categories: [String],
+        thumbnail: String,
+        rating: Number,
       },
     ],
     following: [
