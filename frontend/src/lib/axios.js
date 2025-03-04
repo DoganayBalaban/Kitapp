@@ -5,4 +5,6 @@ export const axiosInstance = axios.create({
       ? "http://localhost:5001/api"
       : "/api",
   withCredentials: true,
+  maxContentLength: 50 * 1024 * 1024, // 50MB'a kadar izin ver
+  maxBodyLength: 50 * 1024 * 1024,
 });

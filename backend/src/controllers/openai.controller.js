@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
+import axios from "axios";
 
 dotenv.config();
 
@@ -13,7 +14,7 @@ export const recommendBooks = async (req, res) => {
     Bir kullanıcı kitap önerisi istiyor. 
     Kullanıcının sevdiği kitaplar: ${likedBooks.join(", ")}. 
     Kullanıcının sevmediği kitaplar: ${dislikedBooks.join(", ")}. 
-    Bu bilgilere dayanarak, 3 tane kitap öner. 
+    Bu bilgilere dayanarak, 10 tane kitap öner. 
     **Sadece kitap isimlerini ver**, açıklama yapma.  
     **Cevabı Türkçe olarak ver.**
   `;
@@ -24,13 +25,38 @@ export const recommendBooks = async (req, res) => {
     const text = response.text();
 
     // Kitap isimlerini düzgün almak için satır satır ayır
-    const bookList = text
+    const bookNames = text
       .split("\n")
-      .map((line) => line.replace(/^\d+\.\s*/, "").trim());
+      .map((line) => line.replace(/^\d+\.\s*/, "").trim())
+      .filter((name) => name.length > 0);
 
-    res.json({ recommendations: bookList });
+    const booksWithDetails = await Promise.all(
+      bookNames.map(async (bookName) => {
+        const googleBooksURL = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(
+          bookName
+        )}&key=${process.env.GOOGLE_BOOKS_API_KEY}`;
+
+        try {
+          const response = await axios.get(googleBooksURL);
+          const bookData = response.data.items?.[0]?.volumeInfo;
+
+          return {
+            id: response.data.items?.[0]?.id || null,
+            title: bookData?.title || bookName,
+            author: bookData?.authors?.join(", ") || "Bilinmeyen Yazar",
+            thumbnail: bookData?.imageLinks?.thumbnail || null,
+            rating: bookData?.averageRating || 0,
+          };
+        } catch (error) {
+          console.error(`Google Books API Hatası: ${error}`);
+          return { title: bookName, author: "Bilinmiyor", thumbnail: null };
+        }
+      })
+    );
+
+    res.json({ books: booksWithDetails });
   } catch (error) {
-    console.error("Gemini API Error:", error);
-    res.status(500).json({ error: "Failed to fetch recommendations" });
+    console.error("Kitap önerisi alınırken hata oluştu:", error);
+    res.status(500).json({ error: "Kitap önerisi alınırken hata oluştu." });
   }
 };

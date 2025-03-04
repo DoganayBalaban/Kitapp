@@ -1,5 +1,8 @@
 import React from "react";
 import { useRecommendationStore } from "../store/useRecommendationStore";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Link } from "react-router-dom";
+import { Star } from "lucide-react";
 
 const Neokusam = () => {
   const {
@@ -21,6 +24,7 @@ const Neokusam = () => {
         value={likedBooks}
         onChange={(e) => setLikedBooks(e.target.value)}
         className="block w-full p-2 border mt-2"
+        disabled={loading} // Yüklenirken input'u disable et
       />
       <input
         type="text"
@@ -28,26 +32,59 @@ const Neokusam = () => {
         value={dislikedBooks}
         onChange={(e) => setDislikedBooks(e.target.value)}
         className="block w-full p-2 border mt-2"
+        disabled={loading}
       />
       <button
         onClick={getRecommendations}
-        className="mt-3 bg-blue-500 text-white p-2 rounded"
+        className="mt-3 bg-blue-500 text-white p-2 rounded flex justify-center items-center"
         disabled={loading}
       >
-        {loading ? "Yükleniyor..." : "Öneri Al"}
+        {loading ? (
+          <div className="loader"></div> // Yüklenme efekti
+        ) : (
+          "Öneri Al"
+        )}
       </button>
       {recommendations.length > 0 && (
         <div className="mt-4 p-3 border rounded">
-          <h3 className="font-semibold">Önerilen Kitaplar:</h3>
-          <ul className="flex flex-col gap-2 m-2 p-2">
-            {" "}
-            {/* flex-col sayesinde dikey sıralanır */}
-            {recommendations.map((book, index) => (
-              <li key={index} className="font-light text-2xl list-disc ml-4">
-                {book}
-              </li>
-            ))}
-          </ul>
+          <>
+            <h3 className="font-semibold">Önerilen Kitaplar:</h3>
+            <Swiper spaceBetween={40} slidesPerView={5}>
+              {recommendations.map((book) => (
+                <div key={book.id} className="border p-4  rounded-md">
+                  <SwiperSlide>
+                    <Link to={`/kitaplar/${book.id}`}>
+                      <div className="flex-col items-center justify-center p-4 space-y-2">
+                        <div className="">
+                          <img
+                            src={book.thumbnail}
+                            alt={book.title}
+                            className="w-full h-auto object-cover rounded shadow-2xl"
+                          />
+                        </div>
+                        <div className="text-center p-2 space-y-4 flex flex-col justify-center items-center">
+                          <h3 className="font-semibold mt-2">{book.title}</h3>
+                          <p className="text-sm font-light">{book.author}</p>
+                          <div className=" flex gap-2">
+                            {Array.from({ length: 5 }).map((_, index) => (
+                              <Star
+                                key={index}
+                                className={
+                                  index < book.rating
+                                    ? "text-yellow-500 fill-yellow-500"
+                                    : "text-gray-400"
+                                }
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  </SwiperSlide>
+                </div>
+              ))}
+            </Swiper>
+          </>
         </div>
       )}
     </div>

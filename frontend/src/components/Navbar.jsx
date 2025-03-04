@@ -93,7 +93,7 @@ const Navbar = () => {
                   <span className="hidden sm:inline">Kütüphanem</span>
                 </Link>
                 <Link
-                  to={"/profile"}
+                  to={"/profil"}
                   className={`btn btn-sm gap-2 flex flex-col items-center hover:bg-gray-200 rounded-md p-4`}
                 >
                   {user.avatar ? (

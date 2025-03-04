@@ -14,6 +14,7 @@ import Footer from "./components/Footer";
 import BookDetails from "./pages/BookDetails";
 import Library from "./pages/Library";
 import Neokusam from "./pages/Neokusam";
+import Profil from "./pages/Profil";
 
 const App = () => {
   const { user, checkAuth, isCheckingAuth } = useAuthStore();
@@ -48,6 +49,7 @@ const App = () => {
         <Route path="/kitaplar" element={<Books />} />
         <Route path="/neokusam" element={<Neokusam />} />
         <Route path="/kütüphane" element={<Library />} />
+        <Route path="/profil" element={<Profil />} />
         <Route path="/kitaplar/:id" element={<BookDetails />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

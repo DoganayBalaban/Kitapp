@@ -20,7 +20,7 @@ export const useRecommendationStore = create((set, get) => ({
         dislikedBooks: dislikedBooks.split(",").map((b) => b.trim()),
       });
 
-      set({ recommendations: res.data.recommendations || [] });
+      set({ recommendations: res.data.books || [] });
     } catch (error) {
       console.error("Error fetching recommendations:", error);
       set({ recommendations: [] }); // Hata alırsa boş array set et
