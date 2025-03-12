@@ -25,6 +25,7 @@ const Profil = () => {
       getPostByUser(user._id);
     }
   }, [user]);
+
   return (
     <div className="mt-20 ">
       <div className="flex justify-center items-center">

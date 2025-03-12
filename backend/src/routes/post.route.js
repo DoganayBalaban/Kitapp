@@ -11,7 +11,7 @@ import {
 
 router.post("/create", protectRoute, createPost);
 router.get("/:bookId", getPostsByBook);
-router.get("/:userId", getPostByUser);
+router.get("/user/:userId", getPostByUser);
 router.put("/:id", protectRoute, updatePost);
 router.delete("/:id", protectRoute, deletePost);
 

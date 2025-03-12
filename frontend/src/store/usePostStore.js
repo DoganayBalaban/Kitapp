@@ -22,7 +22,7 @@ export const usePostStore = create((set, get) => ({
   getPostByUser: async (userId) => {
     set({ isGettingPosts: true });
     try {
-      const res = await axiosInstance.get(`/posts/${userId}`);
+      const res = await axiosInstance.get(`/posts/user/${userId}`);
       set({ posts: res.data });
     } catch (error) {
       console.error(error);
