@@ -30,6 +30,22 @@ export const getPostsByBook = async (req, res) => {
     res.status(500).json({ message: "Sunucu hatası." });
   }
 };
+export const getPostByUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const post = await Post.find({ user: userId }).populate(
+      "user",
+      "name avatar"
+    );
+    if (!post) {
+      return res.status(404).json({ message: "Post bulunamadı." });
+    }
+    res.status(200).json(post);
+  } catch (error) {
+    console.error("Post getirme hatası:", error);
+    res.status(500).json({ message: "Sunucu hatası." });
+  }
+};
 export const updatePost = async (req, res) => {};
 
 export const deletePost = async (req, res) => {

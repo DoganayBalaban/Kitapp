@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useBookStore } from "../store/useBookStore";
-import { Loader, Star } from "lucide-react";
+import { Loader, Star, User } from "lucide-react";
 import { usePostStore } from "../store/usePostStore";
 
 const BookDetails = () => {
   const { id } = useParams();
   const { book, getBookById, isGettingBook, addToReadingList } = useBookStore();
-  const { posts, isGettingPost, addPost } = usePostStore();
+  const { posts, isGettingPost, createPos, getPostByBook } = usePostStore();
   const [data, setData] = useState({ title: "", content: "" });
 
   useEffect(() => {
     getBookById(id);
+    getPostByBook(id);
   }, [id]);
 
   if (isGettingBook) {
-    return <Loader className="w-64 h-64 animate-spin" />;
+    return (
+      <div className="flex items-center justify-center w-64 h-64">
+        <Loader className="w-64 h-64 animate-spin" />
+      </div>
+    );
   }
 
   if (!book) {
@@ -25,7 +30,12 @@ const BookDetails = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (data.title.trim() && data.content.trim()) {
-      addPost(id, data.title, data.content);
+      const postData = {
+        bookId: id, // Kitap ID'sini ekledik
+        title: data.title,
+        content: data.content,
+      };
+      createPost(postData);
       setData({ title: "", content: "" });
     }
   };
@@ -91,14 +101,33 @@ const BookDetails = () => {
       <div className="mt-10">
         <h1 className="text-center text-2xl font-light">İncelemeler</h1>
         {posts.length > 0 ? (
-          <div className="mt-5">
+          <div className="mt-5 flex flex-col  md:grid-cols-2 lg:grid-cols-3 gap-4 ">
             {posts.map((post) => (
-              <div
-                key={post.id}
-                className="border p-4 rounded-lg shadow-md mb-4"
-              >
-                <h2 className="text-lg font-semibold">{post.title}</h2>
-                <p>{post.content}</p>
+              <div key={post.id} className=" p-4 ">
+                <div className="grid grid-cols-5 gap-4 bg-[#F9F2DE] p-4">
+                  {/* Kullanıcı Avatarı ve İsmi */}
+                  <div className="col-span-1 flex flex-col justify-center items-center gap-4">
+                    <img
+                      src={post.user.avatar}
+                      alt={post.user.name}
+                      className="w-30 h-30 rounded-full"
+                    />
+
+                    <h2 className="text-xl">{post.user?.name || "Anonim"}</h2>
+                    <p className="flex justify-center items-center">
+                      <User />
+                      100 Takipçi
+                    </p>
+                    <button className="bg-[#E4B568] p-4 m-4 w-36 font-semibold">
+                      Follow
+                    </button>
+                  </div>
+
+                  {/* Başlık ve İçerik */}
+                  <div className="col-span-4 p-4 m-4">
+                    <p className="text-gray-700">{post.content}</p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>

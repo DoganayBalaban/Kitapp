@@ -6,10 +6,12 @@ import {
   getPostsByBook,
   updatePost,
   deletePost,
+  getPostByUser,
 } from "../controllers/post.controller.js";
 
-router.post("/", protectRoute, createPost);
+router.post("/create", protectRoute, createPost);
 router.get("/:bookId", getPostsByBook);
+router.get("/:userId", getPostByUser);
 router.put("/:id", protectRoute, updatePost);
 router.delete("/:id", protectRoute, deletePost);
 

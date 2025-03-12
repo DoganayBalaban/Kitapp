@@ -19,10 +19,22 @@ export const usePostStore = create((set, get) => ({
       set({ isGettingPosts: false });
     }
   },
+  getPostByUser: async (userId) => {
+    set({ isGettingPosts: true });
+    try {
+      const res = await axiosInstance.get(`/posts/${userId}`);
+      set({ posts: res.data });
+    } catch (error) {
+      console.error(error);
+      toast.error("Postlar getirilemedi.");
+    } finally {
+      set({ isGettingPosts: false });
+    }
+  },
   createPost: async (data) => {
     set({ isCreatingPost: true });
     try {
-      const res = await axiosInstance.post("/posts/", data);
+      const res = await axiosInstance.post("/posts/create", data);
       set((state) => ({ posts: [...state.posts, res.data] }));
       toast.success("Post oluşturuldu.");
     } catch (error) {

@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Camera, Star } from "lucide-react";
 import { SwiperSlide, Swiper } from "swiper/react";
 import { Link } from "react-router-dom";
+import { usePostStore } from "../store/usePostStore";
 
 const Profil = () => {
   const { user, updateProfile, isUpdatingProfile } = useAuthStore();
+  const { getPostByUser, posts } = usePostStore();
   const [selectedImg, setSelectedImg] = useState(null);
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -18,6 +20,11 @@ const Profil = () => {
       await updateProfile({ avatar: base64 });
     };
   };
+  useEffect(() => {
+    if (user?._id) {
+      getPostByUser(user._id);
+    }
+  }, [user]);
   return (
     <div className="mt-20 ">
       <div className="flex justify-center items-center">
@@ -102,7 +109,41 @@ const Profil = () => {
         <div className="m-2 p-2">
           <h1 className="text-3xl font-light">İncelemeler</h1>
         </div>
-        <div></div>
+        <div>
+          {posts.length > 0 ? (
+            <div>
+              {posts.map((post) => (
+                <div
+                  key={post.id}
+                  className="border p-4 rounded-lg shadow-md w-full"
+                >
+                  <div className="grid grid-cols-5 gap-4">
+                    <div className="col-span-1 flex flex-col justify-center items-center">
+                      <img
+                        src={post.user.avatar}
+                        alt={post.user.name}
+                        className="w-12 h-12 rounded-full"
+                      />
+                      <h2 className="text-sm font-medium">
+                        {post.user?.name || "Anonim"}
+                      </h2>
+                    </div>
+                    <div className="col-span-4">
+                      <h2 className="text-lg font-semibold">{post.title}</h2>
+                      <p className="text-gray-700">{post.content}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div>
+              <p className="text-center text-gray-500 mt-5">
+                Henüz inceleme yok.
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
