@@ -7,7 +7,7 @@ import { usePostStore } from "../store/usePostStore";
 const BookDetails = () => {
   const { id } = useParams();
   const { book, getBookById, isGettingBook, addToReadingList } = useBookStore();
-  const { posts, isGettingPost, createPos, getPostByBook } = usePostStore();
+  const { posts, isGettingPost, createPost, getPostByBook } = usePostStore();
   const [data, setData] = useState({ title: "", content: "" });
 
   useEffect(() => {
@@ -105,6 +105,7 @@ const BookDetails = () => {
             {posts.map((post) => (
               <div key={post.id} className=" p-4 ">
                 <div className="grid grid-cols-5 gap-4 bg-[#F9F2DE] p-4">
+                  {" "}
                   {/* Kullanıcı Avatarı ve İsmi */}
                   <div className="col-span-1 flex flex-col justify-center items-center gap-4">
                     <img
@@ -122,7 +123,6 @@ const BookDetails = () => {
                       Follow
                     </button>
                   </div>
-
                   {/* Başlık ve İçerik */}
                   <div className="col-span-4 p-4 m-4">
                     <p className="text-gray-700">{post.content}</p>
