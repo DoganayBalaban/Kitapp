@@ -61,7 +61,6 @@ Frontend varsayılan olarak `http://localhost:3000` üzerinde çalışacaktır.
 ## 🌍 API Endpointleri
 | Yöntem | Endpoint | Açıklama |
 |--------|---------|----------|
-
 | `POST` | `/auth/signup` | Kullanıcı kaydı |
 | `POST` | `/auth/login` | Kullanıcı girişi |
 | `POST` | `/auth/logout` | Kullanıcı çıkışı |
