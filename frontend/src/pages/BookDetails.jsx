@@ -124,8 +124,15 @@ const BookDetails = () => {
                     </button>
                   </div>
                   {/* Başlık ve İçerik */}
-                  <div className="col-span-4 p-4 m-4">
-                    <p className="text-gray-700">{post.content}</p>
+                  <div>
+                    <div className="col-span-4 p-3 m-3">
+                      <h1 className="text-gray-700 font-semibold text-xl ">
+                        {post.title}
+                      </h1>
+                    </div>
+                    <div className="col-span-4 p-4 m-4">
+                      <p className="text-gray-700">{post.content}</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -136,27 +143,36 @@ const BookDetails = () => {
         )}
       </div>
 
-      <div className="mt-10">
-        <h2 className="text-xl font-light">İnceleme Yaz</h2>
-        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-          <div>
-            <label className="block font-medium">Başlık</label>
+      <div className="mt-10 flex flex-col items-center">
+        <h2 className="text-2xl font-light mb-6">İnceleme Yaz</h2>
+        <form
+          onSubmit={handleSubmit}
+          className="w-full max-w-lg bg-white p-6 rounded-lg shadow-md"
+        >
+          <div className="mb-4">
+            <label className="block text-gray-700 font-medium mb-2">
+              Başlık
+            </label>
             <input
               type="text"
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
               value={data.title}
               onChange={(e) => setData({ ...data, title: e.target.value })}
-              className="border w-full p-2 rounded-md"
+              placeholder="Başlık giriniz..."
             />
           </div>
-          <div>
-            <label className="block font-medium ">İçerik</label>
+          <div className="mb-4">
+            <label className="block text-gray-700 font-medium mb-2">
+              Metin
+            </label>
             <textarea
+              className="w-full h-32 p-3 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-primary"
               value={data.content}
               onChange={(e) => setData({ ...data, content: e.target.value })}
-              className="border "
+              placeholder="İncelemenizi buraya yazınız..."
             />
           </div>
-          <button type="submit" className="bg-black text-white">
+          <button className="w-full bg-black text-white p-3 rounded-md font-semibold hover:bg-gray-900 transition">
             Gönder
           </button>
         </form>

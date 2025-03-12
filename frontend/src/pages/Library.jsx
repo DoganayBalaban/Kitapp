@@ -7,7 +7,6 @@ import { useAuthStore } from "../store/useAuthStore";
 import { Loader, MessageSquareMore, Star } from "lucide-react";
 
 const Library = () => {
-  // const { readingList, fetchReadingList } = useAuthStore();
   const { user } = useAuthStore();
   useEffect(() => {
     user;
@@ -42,7 +41,7 @@ const Library = () => {
             <th></th>
           </tr>
           {user.readingList.map((book) => (
-            <tr key={book.id} className="bg-[#F3ECD6]  m-3 ">
+            <tr key={book.bookId} className="bg-[#F3ECD6]  m-3 ">
               <td className="p-6">
                 <div>
                   {" "}
@@ -85,12 +84,17 @@ const Library = () => {
               </td>
               <td>
                 <div className="flex flex-col justify-center items-center gap-4">
-                  <div>
-                    <MessageSquareMore className="w-12 h-12" />
-                  </div>
-                  <div>
-                    <p>İnceleme Yaz</p>
-                  </div>
+                  <Link
+                    to={`/kitaplar/${book.bookId}`}
+                    className="flex flex-col justify-center items-center gap-4"
+                  >
+                    <div>
+                      <MessageSquareMore className="w-12 h-12" />
+                    </div>
+                    <div>
+                      <p>İnceleme Yaz</p>
+                    </div>
+                  </Link>
                 </div>
               </td>
             </tr>
