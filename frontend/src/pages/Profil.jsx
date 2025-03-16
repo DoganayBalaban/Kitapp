@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
-import { Camera, Star } from "lucide-react";
+import { Camera, Star, User } from "lucide-react";
 import { SwiperSlide, Swiper } from "swiper/react";
 import { Link } from "react-router-dom";
 import { usePostStore } from "../store/usePostStore";
@@ -112,37 +112,33 @@ const Profil = () => {
         </div>
         <div>
           {posts.length > 0 ? (
-            <div>
-              {posts.map((post) => (
-                <div
-                  key={post.id}
-                  className="border p-4 rounded-lg shadow-md w-full"
-                >
-                  <div className="grid grid-cols-5 gap-4">
-                    <div className="col-span-1 flex flex-col justify-center items-center">
-                      <img
-                        src={post.user.avatar}
-                        alt={post.user.name}
-                        className="w-12 h-12 rounded-full"
-                      />
-                      <h2 className="text-sm font-medium">
-                        {post.user?.name || "Anonim"}
-                      </h2>
-                    </div>
-                    <div className="col-span-4">
-                      <h2 className="text-lg font-semibold">{post.title}</h2>
-                      <p className="text-gray-700">{post.content}</p>
-                    </div>
+            <div className="m-5 p-5 flex gap-4 ">
+              <Swiper spaceBetween={40} slidesPerView={3}>
+                {posts.map((post) => (
+                  <div key={post.id} className=" p-4">
+                    <SwiperSlide>
+                      <div className=" gap-4 bg-[#F9F2DE] p-4">
+                        {/* Başlık ve İçerik */}
+                        <div className="col-span-4 p-3 m-3">
+                          <div>
+                            <h1 className="text-gray-700 font-semibold text-xl ">
+                              {post.title}
+                            </h1>
+                          </div>
+                          <div className="col-span-4 p-4 m-4">
+                            <p className="text-gray-700">{post.content}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </SwiperSlide>
                   </div>
-                </div>
-              ))}
+                ))}
+              </Swiper>
             </div>
           ) : (
-            <div>
-              <p className="text-center text-gray-500 mt-5">
-                Henüz inceleme yok.
-              </p>
-            </div>
+            <p className="text-center text-gray-500 mt-5">
+              Henüz inceleme yok.
+            </p>
           )}
         </div>
       </div>

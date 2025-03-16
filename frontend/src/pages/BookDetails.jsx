@@ -124,8 +124,8 @@ const BookDetails = () => {
                     </button>
                   </div>
                   {/* Başlık ve İçerik */}
-                  <div>
-                    <div className="col-span-4 p-3 m-3">
+                  <div className="col-span-4 p-3 m-3">
+                    <div>
                       <h1 className="text-gray-700 font-semibold text-xl ">
                         {post.title}
                       </h1>
