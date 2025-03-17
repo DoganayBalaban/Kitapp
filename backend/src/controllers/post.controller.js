@@ -50,13 +50,15 @@ export const updatePost = async (req, res) => {};
 
 export const deletePost = async (req, res) => {
   try {
-    const { bookId } = req.params;
-    const userId = req.user;
+    const { id } = req.params;
+    const userId = req.user._id;
 
-    const post = await Post.findById(bookId);
+    const post = await Post.findById(id);
+
     if (!post) {
       return res.status(404).json({ message: "Post bulunamadı." });
     }
+
     if (post.user.toString() !== userId.toString()) {
       return res.status(403).json({ message: "Yetkiniz yok." });
     }

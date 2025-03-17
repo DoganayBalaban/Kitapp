@@ -21,7 +21,7 @@ const App = () => {
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
-  console.log(user);
+
   if (isCheckingAuth && !user) {
     return (
       <div className="flex justify-center items-center h-screen">

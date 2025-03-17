@@ -45,5 +45,19 @@ export const usePostStore = create((set, get) => ({
     }
   },
   updatePost: async (data) => {},
-  deletePost: async (bookId) => {},
+  deletePost: async (postid) => {
+    set({ isDeletingPost: true });
+    try {
+      await axiosInstance.delete(`/posts/${postid}`);
+      set((state) => ({
+        posts: state.posts.filter((post) => post._id !== postid),
+      }));
+      toast.success("Post silindi.");
+    } catch (error) {
+      console.error(error);
+      toast.error("Post silinemedi.");
+    } finally {
+      set({ isDeletingPost: false });
+    }
+  },
 }));
