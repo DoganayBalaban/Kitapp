@@ -3,6 +3,7 @@ import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 export const useAuthStore = create((set, get) => ({
   user: null,
+  userProfile: null,
   isCheckingAuth: true,
   isRegister: false,
   isLoggingIn: false,
@@ -65,6 +66,18 @@ export const useAuthStore = create((set, get) => ({
       toast.error("Profil Güncellenemedi!");
     } finally {
       set({ isUpdatingProfile: false });
+    }
+  },
+  fetchUserProfile: async (id) => {
+    set({ isLoading: true });
+    try {
+      const res = await axiosInstance.get(`/friends/${id}`);
+      set({ userProfile: res.data });
+    } catch (err) {
+      console.error("Kullanıcı profili getirilemedi:", err);
+      toast.error("Kullanıcı profili getirilemedi");
+    } finally {
+      set({ isLoading: false });
     }
   },
 }));

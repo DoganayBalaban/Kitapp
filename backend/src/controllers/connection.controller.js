@@ -85,3 +85,31 @@ export const getFollowers = async (req, res) => {
     res.status(500).json({ message: "Sunucu hatası." });
   }
 };
+
+export const searchUser = async (req, res) => {
+  const query = req.query.q;
+  if (!query) return res.status(400).json({ error: "Query is required" });
+
+  try {
+    const users = await User.find({
+      name: { $regex: query, $options: "i" }, // case-insensitive
+    }).select("name avatar _id");
+    res.json(users);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Sunucu hatası" });
+  }
+};
+export const getProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "Kullanıcı bulunamadı." });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Sunucu hatası." });
+  }
+};

@@ -21,7 +21,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const handleSearch = (e) => {
     e.preventDefault();
-    navigate(`/kitaplar?search=${search}`);
+    navigate(`/arama?query=${search}`);
   };
   return (
     <header
