@@ -29,7 +29,11 @@ const Books = () => {
     }
   }, [searchQuery, user]);
   if (isGettingBooks) {
-    return <Loader size={10} className="animate-spin"></Loader>;
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <Loader className="w-24 h-24 animate-spin" />
+      </div>
+    );
   }
   return (
     <div className="container mt-19 p-4">
