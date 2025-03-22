@@ -51,7 +51,7 @@ const Arama = () => {
               <h2 className="text-xl font-semibold mb-2">Kitaplar</h2>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {bookResults.map((book) => (
-                  <Link key={book.bookId} to={`/kitaplar/${book.bookId}`}>
+                  <Link key={book.bookId} to={`/kitaplar/${book.id}`}>
                     <div className="flex flex-col items-center">
                       <img
                         src={book.thumbnail}
