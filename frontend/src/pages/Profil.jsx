@@ -156,7 +156,7 @@ const Profil = () => {
               {profileData.readingList.map((book) => (
                 <SwiperSlide key={book.bookId} className="p-4">
                   <Link
-                    to={`/kitaplar/${book.id}`}
+                    to={`/kitaplar/${book.bookId}`}
                     className="flex flex-col items-center"
                   >
                     <img
