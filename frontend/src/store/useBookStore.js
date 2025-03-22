@@ -6,6 +6,7 @@ export const useBookStore = create((set, get) => ({
   books: [],
   book: null,
   readingList: [],
+  gettingReadingList: false,
   featuredBooks: [],
   isGettingBooks: false,
   totalItems: 0,
@@ -78,12 +79,30 @@ export const useBookStore = create((set, get) => ({
   },
 
   fetchReadingList: async () => {
+    set({ gettingReadingList: true });
     try {
       const res = await axiosInstance.get("book/reading-list");
       set({ readingList: res.data });
     } catch (error) {
       console.error(error);
       toast.error("Okuma listesi getirilemedi");
+    } finally {
+      set({ gettingReadingList: false });
+    }
+  },
+  deleteReadingList: async (bookId) => {
+    try {
+      await axiosInstance.delete(`book/reading-list/${bookId}`);
+      toast.success("Kitap okuma listenden silindi");
+      set((state) => ({
+        readingList: state.readingList.filter((book) => book.bookId !== bookId),
+      }));
+    } catch (error) {
+      console.error(
+        "Kitap okunma listesinden silinirken hata oluştu:",
+        error.message
+      );
+      toast.error("Kitap okuma listenden silinemedi");
     }
   },
 }));

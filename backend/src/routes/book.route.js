@@ -5,6 +5,7 @@ import {
   getFeaturedBooks,
   addToReadingList,
   getReadingList,
+  deleteReadingList,
 } from "../controllers/book.controller.js";
 import { protectRoute } from "../middleware/auth.middleware.js";
 
@@ -13,8 +14,9 @@ const router = express.Router();
 // Kitapları aramak için
 router.post("/search", searchBooks);
 router.get("/featured", getFeaturedBooks);
-router.get("/:id", getBookDetails);
 router.post("/addList", protectRoute, addToReadingList);
 router.get("/reading-list", protectRoute, getReadingList);
+router.delete("/reading-list/:id", protectRoute, deleteReadingList);
+router.get("/:id", getBookDetails);
 
 export default router;

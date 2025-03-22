@@ -135,8 +135,6 @@ export const addToReadingList = async (req, res) => {
   } = req.body;
   const userId = req.user?._id;
 
-  console.log("Gelen istek gövdesi:", req.body);
-
   try {
     if (!userId) {
       return res.status(400).json({ message: "Kullanıcı kimliği eksik." });
@@ -186,7 +184,7 @@ export const getReadingList = async (req, res) => {
   const userId = req.user._id; // Kullanıcı ID'si alınıyor
 
   try {
-    const user = await User.findById(userId).populate("readingList"); // Kullanıcıyı ve okuma listesini getir
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "Kullanıcı bulunamadı." });
     }
@@ -195,6 +193,33 @@ export const getReadingList = async (req, res) => {
     console.error("Okuma listesi getirilirken hata oluştu:", error.message);
     res.status(500).json({
       message: "Okuma listesi getirilirken bir hata oluştu.",
+      error: error.message,
+    });
+  }
+};
+export const deleteReadingList = async (req, res) => {
+  try {
+    const bookId = req.params.id;
+    const userId = req.user._id;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Kullanıcı Bulunamadı." });
+    }
+    user.readingList = user.readingList.filter(
+      (book) => book.bookId !== bookId
+    );
+    await User.findByIdAndUpdate(userId, {
+      $pull: { readingList: { bookId } },
+    });
+
+    res.status(200).json({ message: "Kitap okuma listesinden silindi." });
+  } catch (error) {
+    console.error(
+      "Okuma listesinden kitap silinirken hata oluştu:",
+      error.message
+    );
+    res.status(500).json({
+      message: "Okuma listesinden kitap silinirken bir hata oluştu.",
       error: error.message,
     });
   }
