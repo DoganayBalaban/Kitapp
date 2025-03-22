@@ -39,6 +39,7 @@ const userSchema = new mongoose.Schema(
         categories: [String],
         thumbnail: String,
         rating: Number,
+        durum: String,
       },
     ],
     following: [
