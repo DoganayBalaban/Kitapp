@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useBookStore } from "../store/useBookStore";
 import { MessageSquareMore, Star, Loader } from "lucide-react";
@@ -10,6 +10,7 @@ const Library = () => {
     gettingReadingList,
     readingList,
   } = useBookStore();
+  const [bookState, SetBookState] = useState("Okunacak");
 
   useEffect(() => {
     fetchReadingList();
@@ -19,18 +20,58 @@ const Library = () => {
     <div className="mt-20 bg-[#FCFCFF]">
       <div className="p-4 gap-2 flex flex-col justify-center items-center h-96">
         <div className="flex flex-col justify-center items-center p-3 space-y-2">
-          <h1 className="font-light text-4xl tracking-wider">Kitaplığın</h1>
+          <h1
+            className="
+          
+          font-light text-4xl tracking-wider
+          "
+          >
+            Kitaplığın
+          </h1>
           <p className="text-md">Tüm favori kitaplarını burada oku</p>
         </div>
         <div className="flex space-x-8 rounded-4xl bg-[#E8E1C6] justify-between items-center">
-          <div className="rounded-4xl bg-[#59461B] p-4 flex justify-center items-center">
-            <p className="text-white text-xl mx-3">Okundu</p>
+          <div
+            onClick={() => SetBookState("Okunuyor")}
+            className={`rounded-4xl  p-4 flex justify-center items-center cursor-pointer ${
+              bookState == "Okunuyor" ? "bg-[#59461B]" : ""
+            }`}
+          >
+            <p
+              className={`text-xl mx-3 ${
+                bookState == "Okunuyor" ? "text-white" : ""
+              }`}
+            >
+              Okunuyor
+            </p>
           </div>
-          <div className="rounded-4xl p-4 flex justify-center items-center">
-            <p className="text-xl mx-3">Şu An Okunan</p>
+          <div
+            onClick={() => SetBookState("Okunacak")}
+            className={`rounded-4xl cursor-pointer p-4 flex justify-center items-center ${
+              bookState == "Okunacak" ? "bg-[#59461B]" : ""
+            }`}
+          >
+            <p
+              className={`text-xl mx-3 ${
+                bookState == "Okunacak" ? "text-white" : ""
+              }`}
+            >
+              Okunacak
+            </p>
           </div>
-          <div className="rounded-4xl p-4 flex justify-center items-center">
-            <p className="text-xl mx-3">Okunacak</p>
+          <div
+            onClick={() => SetBookState("Okundu")}
+            className={`rounded-4xl cursor-pointer p-4 flex justify-center items-center ${
+              bookState == "Okundu" ? "bg-[#59461B]" : ""
+            }`}
+          >
+            <p
+              className={`text-xl mx-3 ${
+                bookState == "Okundu" ? "text-white" : ""
+              }`}
+            >
+              Okundu
+            </p>
           </div>
         </div>
       </div>
