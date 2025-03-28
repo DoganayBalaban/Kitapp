@@ -75,13 +75,13 @@ export const getFollowing = async (req, res) => {
 };
 export const getFollowers = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).populate(
+    const userId = req.params.id || req.user.id;
+    const user = await User.findById(userId).populate(
       "followers",
       "name email avatar"
     );
     res.status(200).json(user.followers);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Sunucu hatası." });
   }
 };
@@ -103,7 +103,11 @@ export const searchUser = async (req, res) => {
 export const getProfile = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findById(id).select("-password");
+    const user = await User.findById(id)
+      .select("-password")
+      .populate("followers", "name avatar")
+      .populate("following", "name avatar");
+
     if (!user) {
       return res.status(404).json({ message: "Kullanıcı bulunamadı." });
     }

@@ -12,8 +12,8 @@ import {
 
 router.post("/follow/:userId", protectRoute, followUser);
 router.post("/unfollow/:userId", protectRoute, unfollowUser);
-router.get("/following", protectRoute, getFollowing);
-router.get("/followers", protectRoute, getFollowers);
+router.get("/followers/:id?", protectRoute, getFollowers);
+router.get("/following/:id?", protectRoute, getFollowing);
 router.get("/search", searchUser);
 router.get("/:id", getProfile);
 

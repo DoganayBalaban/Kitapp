@@ -120,6 +120,20 @@ const Profil = () => {
             )}
           </div>
           <h1 className="text-3xl font-light">{profileData.name}</h1>
+          <div className="flex gap-10 text-center mt-4">
+            <div>
+              <p className="text-sm text-gray-500">Takip Edilen</p>
+              <p className="text-lg font-medium">
+                {profileData.following?.length || 0}
+              </p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Takipçiler</p>
+              <p className="text-lg font-medium">
+                {profileData.followers?.length || 0}
+              </p>
+            </div>
+          </div>
 
           {!isOwnProfile && user && user._id !== userProfile?._id && (
             <button
