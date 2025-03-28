@@ -7,6 +7,7 @@ import { SwiperSlide, Swiper } from "swiper/react";
 import { Scrollbar } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/scrollbar";
+import { useConnectionStore } from "../store/useConnectionStore";
 
 const Profil = () => {
   const { id } = useParams();
@@ -18,11 +19,10 @@ const Profil = () => {
     isUpdatingProfile,
     userProfile,
     fetchUserProfile,
-    followUser,
-    unfollowUser,
   } = useAuthStore();
 
   const { getPostByUser, posts, deletePost, updatePost } = usePostStore();
+  const { followUser, unfollowUser } = useConnectionStore();
 
   const profileData = isOwnProfile ? user : userProfile;
 
@@ -137,11 +137,17 @@ const Profil = () => {
 
           {!isOwnProfile && user && user._id !== userProfile?._id && (
             <button
-              onClick={() =>
-                isFollowing
-                  ? unfollowUser(userProfile._id)
-                  : followUser(userProfile._id)
-              }
+              onClick={async () => {
+                if (isFollowing) {
+                  await unfollowUser(userProfile._id);
+                } else {
+                  await followUser(userProfile._id);
+                }
+
+                if (!isOwnProfile) {
+                  await fetchUserProfile(userProfile._id);
+                }
+              }}
               className="mt-2 px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600"
             >
               {isFollowing ? "Takipten Çık" : "Takip Et"}

@@ -80,4 +80,5 @@ export const useAuthStore = create((set, get) => ({
       set({ isLoading: false });
     }
   },
+  setUser: (newUser) => set({ user: newUser }),
 }));
