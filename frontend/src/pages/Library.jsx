@@ -8,6 +8,7 @@ import {
   Loader,
   ArrowRight,
   ArrowLeft,
+  Bookmark,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -71,7 +72,9 @@ const SwipeableBook = ({ book, onUpdateStatus, onRemove }) => {
     <div className={`relative w-full mb-6 overflow-x-hidden transition`}>
       {nextStatus && (
         <div
-          className={`absolute inset-0 flex flex-col justify-center items-center pointer-events-none z-0 ${bgColor}`}
+          className={`absolute inset-0 pointer-events-none z-0 ${bgColor} flex items-center justify-${
+            direction === "right" ? "start" : "end"
+          } px-10`}
         >
           <div className="flex items-center gap-2 opacity-60">
             {arrowIcon}
@@ -90,6 +93,7 @@ const SwipeableBook = ({ book, onUpdateStatus, onRemove }) => {
           alt={book.title}
           className="w-24 h-auto object-cover rounded shadow"
         />
+
         <div className="mx-6 flex-1">
           <h3 className="text-lg font-semibold text-[#565353]">{book.title}</h3>
           <p className="text-[#7D6222]">{book.authors.join(", ")}</p>
