@@ -224,3 +224,25 @@ export const deleteReadingList = async (req, res) => {
     });
   }
 };
+
+export const updateBookStatus = async (req, res) => {
+  const { bookId, newStatus } = req.body;
+
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) return res.status(404).json({ message: "Kullanıcı bulunamadı" });
+
+    const bookIndex = user.readingList.findIndex((b) => b.bookId === bookId);
+    if (bookIndex === -1)
+      return res.status(404).json({ message: "Kitap bulunamadı" });
+
+    user.readingList[bookIndex].durum = newStatus;
+    await user.save();
+
+    res.json({ message: "Kitap durumu güncellendi." });
+  } catch (err) {
+    console.error("Kitap durumu güncellenirken hata oluştu:", err.message);
+    res.status(500).json({ message: "Sunucu hatası", error: err.message });
+  }
+};

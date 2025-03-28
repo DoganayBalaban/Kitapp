@@ -51,6 +51,24 @@ export const useBookStore = create((set, get) => ({
       set({ isGettingBooks: false });
     }
   },
+  updateBookStatus: async (bookId, newStatus) => {
+    set((state) => ({
+      readingList: state.readingList.map((book) =>
+        book.bookId === bookId ? { ...book, durum: newStatus } : book
+      ),
+    }));
+
+    try {
+      await axiosInstance.patch(
+        "/book/update-book-status", // Route'un yoluna göre düzenle
+        { bookId, newStatus }
+      );
+      toast.success("Durum güncellendi");
+    } catch (error) {
+      console.error("Durum güncelleme hatası:", error);
+      toast.error("Durum güncellenemedi");
+    }
+  },
 
   addToReadingList: async (book) => {
     try {

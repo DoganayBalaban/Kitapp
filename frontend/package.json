@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-spring/web": "^9.7.5",
     "@tailwindcss/vite": "^4.0.0",
+    "@use-gesture/react": "^10.3.1",
     "axios": "^1.7.9",
     "framer-motion": "^12.4.1",
     "lucide-react": "^0.474.0",
