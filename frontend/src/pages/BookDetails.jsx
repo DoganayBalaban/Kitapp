@@ -8,7 +8,9 @@ const BookDetails = () => {
   const { id } = useParams();
   const { book, getBookById, isGettingBook, addToReadingList } = useBookStore();
   const { posts, isGettingPost, createPost, getPostByBook } = usePostStore();
+
   const [data, setData] = useState({ title: "", content: "" });
+  const [showAllReviews, setShowAllReviews] = useState(false);
 
   useEffect(() => {
     getBookById(id);
@@ -31,7 +33,7 @@ const BookDetails = () => {
     e.preventDefault();
     if (data.title.trim() && data.content.trim()) {
       const postData = {
-        bookId: id, // Kitap ID'sini ekledik
+        bookId: id,
         title: data.title,
         content: data.content,
       };
@@ -39,6 +41,8 @@ const BookDetails = () => {
       setData({ title: "", content: "" });
     }
   };
+
+  const visiblePosts = showAllReviews ? posts : posts.slice(0, 2);
 
   return (
     <div className="container mt-10 p-6">
@@ -81,6 +85,7 @@ const BookDetails = () => {
             Okuma Listeme Ekle
           </button>
         </div>
+
         <div className="col-span-3 p-4 text-start">
           <h1 className="text-4xl font-light">{book.title}</h1>
           <p className="text-xl text-gray-600">{book.authors?.join(", ")}</p>
@@ -98,51 +103,58 @@ const BookDetails = () => {
         </div>
       </div>
 
+      {/* İncelemeler */}
       <div className="mt-10">
         <h1 className="text-center text-2xl font-light">İncelemeler</h1>
-        {posts.length > 0 ? (
-          <div className="mt-5 flex flex-col  md:grid-cols-2 lg:grid-cols-3 gap-4 ">
-            {posts.map((post) => (
-              <div key={post.id} className=" p-4 ">
+        {visiblePosts.length > 0 ? (
+          <div className="mt-5 flex flex-col gap-4">
+            {visiblePosts.map((post) => (
+              <div key={post.id} className="p-4">
                 <div className="grid grid-cols-5 gap-4 bg-[#F9F2DE] p-4">
-                  {" "}
-                  {/* Kullanıcı Avatarı ve İsmi */}
                   <div className="col-span-1 flex flex-col justify-center items-center gap-4">
                     <img
                       src={post.user.avatar}
                       alt={post.user.name}
-                      className="w-30 h-30 rounded-full"
+                      className="w-24 h-24 rounded-full object-cover"
                     />
-
                     <h2 className="text-xl">{post.user?.name || "Anonim"}</h2>
-                    <p className="flex justify-center items-center">
-                      <User />
+                    <p className="flex items-center text-sm">
+                      <User className="mr-1" />
                       {post.user.followers?.length || 0} Takipçi
                     </p>
-                    <button className="bg-[#E4B568] p-4 m-4 w-36 font-semibold">
+                    <button className="bg-[#E4B568] px-4 py-2 font-semibold rounded">
                       Follow
                     </button>
                   </div>
-                  {/* Başlık ve İçerik */}
+
                   <div className="col-span-4 p-3 m-3">
-                    <div>
-                      <h1 className="text-gray-700 font-semibold text-xl ">
-                        {post.title}
-                      </h1>
-                    </div>
-                    <div className="col-span-4 p-4 m-4">
-                      <p className="text-gray-700">{post.content}</p>
-                    </div>
+                    <h1 className="text-gray-700 font-semibold text-xl">
+                      {post.title}
+                    </h1>
+                    <p className="text-gray-700 mt-4">{post.content}</p>
                   </div>
                 </div>
               </div>
             ))}
+
+            {/* Daha fazla göster / Daha az göster butonu */}
+            {posts.length > 2 && (
+              <div className="flex justify-center mt-6">
+                <button
+                  onClick={() => setShowAllReviews(!showAllReviews)}
+                  className="bg-[#E4B568] px-6 py-2 font-semibold rounded hover:bg-[#d3a656] transition"
+                >
+                  {showAllReviews ? "Daha az göster" : "Daha fazla göster"}
+                </button>
+              </div>
+            )}
           </div>
         ) : (
           <p className="text-center text-gray-500 mt-5">Henüz inceleme yok.</p>
         )}
       </div>
 
+      {/* İnceleme Yazma Formu */}
       <div className="mt-10 flex flex-col items-center">
         <h2 className="text-2xl font-light mb-6">İnceleme Yaz</h2>
         <form
