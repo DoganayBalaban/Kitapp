@@ -68,6 +68,29 @@ export const useAuthStore = create((set, get) => ({
       set({ isUpdatingProfile: false });
     }
   },
+  getFriendsReadingLists: async () => {
+    const { user } = get();
+    if (!user?.following?.length) return [];
+
+    try {
+      const results = await Promise.all(
+        user.following.map(async (friendId) => {
+          const res = await axiosInstance.get(`/friends/${friendId}`);
+          return {
+            id: friendId,
+            name: res.data.name,
+            avatar: res.data.avatar,
+            readingList: res.data.readingList || [],
+          };
+        })
+      );
+      return results;
+    } catch (error) {
+      console.error("Arkadaşların okuma listesi alınamadı:", error);
+      toast.error("Arkadaş kitapları yüklenemedi");
+      return [];
+    }
+  },
   fetchUserProfile: async (id) => {
     set({ isLoading: true });
     try {

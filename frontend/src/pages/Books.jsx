@@ -23,13 +23,22 @@ const Books = () => {
     deleteReadingList,
   } = useBookStore();
   const [query, setQuery] = useState(searchQuery || "");
-  const { user } = useAuthStore();
+  const { user, getFriendsReadingLists } = useAuthStore();
   const [readingListBooks, setReadingListBooks] = useState([]);
+  const [friendsBooks, setFriendsBooks] = useState([]);
   useEffect(() => {
     if (user && user.readingList) {
       setReadingListBooks(user.readingList);
     }
   }, [user]);
+  useEffect(() => {
+    const fetchFriendsBooks = async () => {
+      const data = await getFriendsReadingLists();
+      setFriendsBooks(data);
+    };
+
+    fetchFriendsBooks();
+  }, []);
   const handleReadingList = (book) => {
     // If book is already in reading list, remove it
     if (readingListBooks.some((b) => b.bookId === book.id)) {
@@ -192,8 +201,8 @@ const Books = () => {
                 ))}
               </Swiper>
             </div>
-            <h2 className="text-3xl font-light mb-2">Okumaya Devam Et</h2>
             <div className="">
+              <h2 className="text-3xl font-light mb-2">Okumaya Devam Et</h2>
               <Swiper spaceBetween={40} slidesPerView={5}>
                 {user.readingList.map((book) => (
                   <div key={book.id} className="border p-4  rounded-md">
@@ -231,6 +240,81 @@ const Books = () => {
                   </div>
                 ))}
               </Swiper>
+            </div>
+            <div>
+              <div>
+                {friendsBooks.length > 0 && (
+                  <div className="mt-10">
+                    <h2 className="text-3xl font-light mb-4">
+                      Arkadaşların Ne Okuyor?
+                    </h2>
+                    <Swiper spaceBetween={40} slidesPerView={5}>
+                      {friendsBooks.map((friend) =>
+                        friend.readingList.slice(0, 3).map((book) => (
+                          <div
+                            key={`${friend.id}-${book.bookId}`}
+                            className="border p-4 rounded-md hover:shadow-xl transition-shadow duration-300"
+                          >
+                            <SwiperSlide>
+                              <div className="flex-col items-center justify-center p-4 space-y-2 relative group">
+                                {/* Avatar ve İsim */}
+                                <Link
+                                  to={`/profil/${friend.id}`}
+                                  className="flex items-center gap-2 mb-2 hover:underline"
+                                >
+                                  <img
+                                    src={friend.avatar}
+                                    alt={friend.name}
+                                    className="w-8 h-8 rounded-full object-cover border"
+                                  />
+                                  <p className="text-sm font-medium">
+                                    {friend.name}
+                                  </p>
+                                </Link>
+
+                                {/* Kitap Görseli */}
+                                <Link to={`/kitaplar/${book.bookId}`}>
+                                  <div className="relative">
+                                    <img
+                                      src={book.thumbnail}
+                                      alt={book.title}
+                                      className="w-full h-auto object-cover rounded shadow-2xl group-hover:opacity-90"
+                                    />
+                                  </div>
+                                </Link>
+
+                                {/* Kitap Bilgileri */}
+                                <div className="text-center p-2 space-y-3 flex flex-col justify-center items-center">
+                                  <h3 className="font-semibold text-base">
+                                    {book.title}
+                                  </h3>
+                                  <p className="text-sm font-light text-gray-600">
+                                    {book.authors?.join(", ")}
+                                  </p>
+                                  <div className="flex gap-1">
+                                    {Array.from({ length: 5 }).map(
+                                      (_, index) => (
+                                        <Star
+                                          key={index}
+                                          className={
+                                            index < book.rating
+                                              ? "text-yellow-500 fill-yellow-500"
+                                              : "text-gray-400"
+                                          }
+                                        />
+                                      )
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </SwiperSlide>
+                          </div>
+                        ))
+                      )}
+                    </Swiper>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
