@@ -23,6 +23,10 @@ const Navbar = () => {
     e.preventDefault();
     navigate(`/arama?query=${search}`);
   };
+  const handleLogout = async () => {
+    await logout();
+    navigate("/"); // çıkış yaptıktan sonra ana sayfaya yönlendir
+  };
   return (
     <header
       className="bg-[#FCFCFF]  border-base-300 fixed w-full top-0 z-40 
@@ -113,7 +117,7 @@ const Navbar = () => {
                 </Link>
 
                 <button
-                  onClick={logout}
+                  onClick={handleLogout}
                   className="gap-2 flex flex-col items-center hover:bg-gray-200 rounded-md p-4 cursor-pointer"
                 >
                   <LogOut className="w-6 h-6" />
