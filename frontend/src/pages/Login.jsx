@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Eye, EyeOff, Loader } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -9,12 +9,18 @@ const Login = () => {
     email: "",
     password: "",
   });
-  const { login, isLoggingIn } = useAuthStore();
-  const handleSubmit = (e) => {
+  const { login, isLoggingIn, user } = useAuthStore(); // user'ı ekle
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    login(data);
+    await login(data);
+    if (user) navigate("/kitaplar");
   };
-
+  useEffect(() => {
+    if (user) {
+      navigate("/kitaplar");
+    }
+  }, [user]);
   return (
     <div className="h-screen pt-19 grid lg:grid-cols-2 p-6 bg-[#FCFCFF]">
       {/* Left side form */}

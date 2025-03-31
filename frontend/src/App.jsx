@@ -23,12 +23,12 @@ const App = () => {
 
   useEffect(() => {
     checkAuth();
-  }, [checkAuth]);
+  }, []);
 
-  if (isCheckingAuth && !user) {
+  if (isCheckingAuth) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <Loader size={10} className="animate-spin"></Loader>
+        <Loader size={40} className="animate-spin" />
       </div>
     );
   }

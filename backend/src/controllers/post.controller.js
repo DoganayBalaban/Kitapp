@@ -23,7 +23,7 @@ export const createPost = async (req, res) => {
 export const getPostsByBook = async (req, res) => {
   try {
     const { bookId } = req.params;
-    const post = await Post.find({ bookId }).populate("user", "name avatar");
+    const post = await Post.find({ bookId }).populate("user", "-password");
     res.status(200).json(post);
   } catch (error) {
     console.error("Post getirme hatası:", error);

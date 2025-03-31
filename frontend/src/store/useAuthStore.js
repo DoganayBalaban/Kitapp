@@ -24,6 +24,7 @@ export const useAuthStore = create((set, get) => ({
     try {
       const res = await axiosInstance.post("/auth/signup", data);
       set({ user: res.data });
+      await get().checkAuth();
       toast.success("Kayıt Başarılı!");
     } catch (error) {
       console.error(error);
@@ -38,6 +39,7 @@ export const useAuthStore = create((set, get) => ({
       const res = await axiosInstance.post("/auth/login", data);
       set({ user: res.data });
       toast.success("Giriş Başarılı!");
+      await get().checkAuth();
     } catch (error) {
       console.error(error);
       toast.error(error.response.data.message);
@@ -50,6 +52,7 @@ export const useAuthStore = create((set, get) => ({
       await axiosInstance.post("/auth/logout");
       set({ user: null });
       toast.success("Çıkış Başarılı!");
+      await get().checkAuth();
     } catch (error) {
       console.error(error);
       toast.error("Çıkış Yapılamadı!");

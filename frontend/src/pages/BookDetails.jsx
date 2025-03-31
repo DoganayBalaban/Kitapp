@@ -117,7 +117,7 @@ const BookDetails = () => {
                     <h2 className="text-xl">{post.user?.name || "Anonim"}</h2>
                     <p className="flex justify-center items-center">
                       <User />
-                      100 Takipçi
+                      {post.user.followers?.length || 0} Takipçi
                     </p>
                     <button className="bg-[#E4B568] p-4 m-4 w-36 font-semibold">
                       Follow
