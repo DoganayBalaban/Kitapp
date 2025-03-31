@@ -21,7 +21,9 @@ const Profil = () => {
     fetchUserProfile,
   } = useAuthStore();
 
-  const { getPostByUser, posts, deletePost, updatePost } = usePostStore();
+  const { getPostByUser, posts, deletePost, updatePost, bookDetailsMap } =
+    usePostStore();
+
   const { followUser, unfollowUser } = useConnectionStore();
 
   const profileData = isOwnProfile ? user : userProfile;
@@ -70,10 +72,19 @@ const Profil = () => {
     }
   }, [id]);
 
+  // useEffect(() => {
+  //   const targetId = isOwnProfile ? user?._id : id;
+  //   if (targetId) {
+  //     getPostByUser(targetId);
+  //   }
+  // }, [user, id]);
   useEffect(() => {
     const targetId = isOwnProfile ? user?._id : id;
     if (targetId) {
-      getPostByUser(targetId);
+      getPostByUser(targetId).then(() => {
+        // postlar geldikten sonra kitap bilgilerini çek
+        fetchBookDetailsForPosts(get().posts);
+      });
     }
   }, [user, id]);
 
@@ -235,6 +246,7 @@ const Profil = () => {
                   <PostCard
                     post={post}
                     isOwn={isOwnProfile && isPostOwner(post.user, user?._id)}
+                    bookInfo={bookDetailsMap[post.bookId]}
                     editingPostId={editingPostId}
                     handleEdit={handleEdit}
                     handleDelete={handleDelete}
@@ -277,6 +289,7 @@ const Profil = () => {
 const PostCard = ({
   post,
   isOwn,
+  bookInfo,
   editingPostId,
   handleEdit,
   handleDelete,
@@ -291,6 +304,29 @@ const PostCard = ({
 
   return (
     <div className="bg-[#F9F2DE] p-4 rounded shadow mb-6">
+      {/* Kitap bilgisi başta gösterilecek */}
+      {bookInfo && (
+        <div className="flex items-center gap-4 mb-4">
+          <Link
+            to={`/kitaplar/${post.bookId}`}
+            className="flex items-center gap-4 hover:underline"
+          >
+            <img
+              src={bookInfo.thumbnail}
+              alt={bookInfo.title}
+              className="w-16 h-24 object-cover rounded shadow"
+            />
+            <div>
+              <h3 className="font-semibold text-lg">{bookInfo.title}</h3>
+              <p className="text-sm text-gray-500">
+                {bookInfo.authors?.join(", ")}
+              </p>
+            </div>
+          </Link>
+        </div>
+      )}
+
+      {/* Post içerik alanı */}
       {isOwn && (
         <div className="flex items-center justify-end space-x-3">
           {isEditing ? (
@@ -311,6 +347,7 @@ const PostCard = ({
         </div>
       )}
 
+      {/* Düzenleme modunda ise */}
       {isEditing && isOwn ? (
         <>
           <input
@@ -334,7 +371,9 @@ const PostCard = ({
       ) : (
         <>
           <h1 className="text-gray-700 font-semibold text-xl">{post.title}</h1>
-          <p className="text-gray-700 mt-2">{post.content}</p>
+          <p className="text-gray-700 mt-2 whitespace-pre-line">
+            {post.content}
+          </p>
         </>
       )}
     </div>

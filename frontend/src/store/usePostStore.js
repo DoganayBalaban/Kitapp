@@ -3,6 +3,7 @@ import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 export const usePostStore = create((set, get) => ({
   posts: [],
+  bookDetailsMap: {},
   isCreatingPost: false,
   isUpdatingPost: false,
   isDeletingPost: false,
@@ -24,12 +25,41 @@ export const usePostStore = create((set, get) => ({
     try {
       const res = await axiosInstance.get(`/posts/user/${userId}`);
       set({ posts: res.data });
+      await get().fetchBookDetailsForPosts(res.data);
     } catch (error) {
       console.error(error);
       toast.error("Postlar getirilemedi.");
     } finally {
       set({ isGettingPosts: false });
     }
+  },
+
+  fetchBookDetailsForPosts: async (posts) => {
+    const existing = get().bookDetailsMap;
+    const newMap = { ...existing };
+
+    await Promise.all(
+      posts.map(async (post) => {
+        const bookId = post.bookId;
+        if (!newMap[bookId]) {
+          try {
+            const res = await fetch(
+              `https://www.googleapis.com/books/v1/volumes/${bookId}`
+            );
+            const data = await res.json();
+            newMap[bookId] = {
+              title: data.volumeInfo.title,
+              thumbnail: data.volumeInfo.imageLinks?.thumbnail || "",
+              authors: data.volumeInfo.authors || [],
+            };
+          } catch (err) {
+            console.error("Kitap bilgisi alınamadı", err);
+          }
+        }
+      })
+    );
+
+    set({ bookDetailsMap: newMap });
   },
   createPost: async (data) => {
     set({ isCreatingPost: true });

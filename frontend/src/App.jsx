@@ -16,10 +16,11 @@ import Library from "./pages/Library";
 import Neokusam from "./pages/Neokusam";
 import Profil from "./pages/Profil";
 import Arama from "./pages/Arama";
-import ProfilDetay from "./pages/ProfilDetay";
+import ProtectedRoute from "./components/ProtectedRoute"; // ✅ Yeni ekledik
 
 const App = () => {
   const { user, checkAuth, isCheckingAuth } = useAuthStore();
+
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
@@ -31,6 +32,7 @@ const App = () => {
       </div>
     );
   }
+
   return (
     <>
       <Toaster />
@@ -48,13 +50,65 @@ const App = () => {
           path="/register"
           element={!user ? <Register /> : <Navigate to="/kitaplar" />}
         />
-        <Route path="/kitaplar" element={<Books />} />
-        <Route path="/arama" element={<Arama />} />
-        <Route path="/neokusam" element={<Neokusam />} />
-        <Route path="/kütüphane" element={<Library />} />
-        <Route path="/profil" element={<Profil />} />
-        <Route path="/profil/:id" element={<Profil />} />
-        <Route path="/kitaplar/:id" element={<BookDetails />} />
+
+        {/* 🔐 Korumalı Rotalar */}
+        <Route
+          path="/kitaplar"
+          element={
+            <ProtectedRoute>
+              <Books />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/arama"
+          element={
+            <ProtectedRoute>
+              <Arama />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/neokusam"
+          element={
+            <ProtectedRoute>
+              <Neokusam />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/kütüphane"
+          element={
+            <ProtectedRoute>
+              <Library />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profil"
+          element={
+            <ProtectedRoute>
+              <Profil />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profil/:id"
+          element={
+            <ProtectedRoute>
+              <Profil />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/kitaplar/:id"
+          element={
+            <ProtectedRoute>
+              <BookDetails />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
