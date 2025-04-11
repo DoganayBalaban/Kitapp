@@ -4,12 +4,14 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { connectDB } from "./lib/db.js";
 import bodyParser from "body-parser";
+import path from "path";
 
 dotenv.config();
 
 const app = express();
 
 const PORT = process.env.PORT || 5001;
+const __dirname = path.resolve();
 
 import authRoutes from "./routes/auth.route.js";
 import bookRoutes from "./routes/book.route.js";
@@ -29,6 +31,13 @@ app.use("/api/book", bookRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/friends", connectionRoutes);
 app.use("/api/ai", openaiRoutes);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
